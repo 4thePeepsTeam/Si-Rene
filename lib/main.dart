@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sirene/call.dart';
 import 'package:sirene/data.dart';
 import 'package:sirene/firebase_options.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,51 +51,127 @@ class _MainState extends State<Main> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       // ignore: sized_box_for_whitespace
-      body: Container(
-        width: size.width,
-        height: size.height,
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: GestureDetector(
-            onTap: () async {
-              userCredential = await signInWithGoogle();
-              if (userCredential != null) {
-                print(userCredential.user.email);
-                  await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).get().then((value) async {
-                  if (!value.exists) {
-                    await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
-                      "name": userCredential.user.displayName,
-                      "isOnCall": false,
-                      "caller": "",
-                      "remoteUid": "",
-                      "calling": "",
-                    }); 
-                  }
-                }); 
-                await removeCallData();
-                leave();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return Call();
-                    },
-                  ),
-                );
-              }   
-            },
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              height: size.height * 0.08,
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(217, 217, 217, 1),
-              ),
-              child: const Center(
-                child: Text(
-                  "Sign Up",
+      body: SafeArea(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          child: Column(
+            children: [
+        
+              Expanded(
+                flex: 1,
+                child: SvgPicture.asset(
+                  "assets/svg/auth_background.svg",
+                  width: size.width * 0.6,
+                  alignment: Alignment.bottomCenter,
                 ),
               ),
-            ),
-          ),
+        
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          minimumSize: MaterialStatePropertyAll(Size(size.width, size.height * 0.08)),
+                          surfaceTintColor: MaterialStatePropertyAll(Colors.transparent),
+                          backgroundColor: MaterialStatePropertyAll(Color.fromRGBO(255, 87, 20, 1)),
+                        ),
+                         onPressed: () async {
+                          userCredential = await signInWithGoogle();
+                          if (userCredential != null) {
+                            print(userCredential.user.email);
+                            print("credential: ${userCredential}");
+                              await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).get().then((value) async {
+                              if (!value.exists) {
+                                await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
+                                  "name": userCredential.user.displayName,
+                                  "isOnCall": false,
+                                  "caller": "",
+                                  "remoteUid": "",
+                                  "calling": "",
+                                }); 
+                              }
+                            }); 
+                            await removeCallData();
+                            leave();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const Call();
+                                },
+                              ),
+                            );
+                          }   
+                        },
+                        child: const Center(
+                          child: Text(
+                            "Masuk sebagai User",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+              
+                      const SizedBox(height: 10),
+
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          minimumSize: MaterialStatePropertyAll(Size(size.width, size.height * 0.08)),
+                          surfaceTintColor: MaterialStatePropertyAll(Colors.transparent),
+                          backgroundColor: MaterialStatePropertyAll(Colors.white),
+                          side: MaterialStatePropertyAll(
+                            BorderSide(
+                              color: Color.fromRGBO(255, 87, 20, 1),
+                            ),
+                          ),
+                        ),
+                         onPressed: () async {
+                          userCredential = await signInWithGoogle();
+                          if (userCredential != null) {
+                            print(userCredential.user.email);
+                            print("credential: ${userCredential}");
+                              await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).get().then((value) async {
+                              if (!value.exists) {
+                                await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
+                                  "name": userCredential.user.displayName,
+                                  "isOnCall": false,
+                                  "caller": "",
+                                  "remoteUid": "",
+                                  "calling": "",
+                                }); 
+                              }
+                            }); 
+                            await removeCallData();
+                            leave();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const Call();
+                                },
+                              ),
+                            );
+                          }   
+                        },
+                        child: const Center(
+                          child: Text(
+                            "Masuk sebagai Officer",
+                            style: TextStyle(
+                              color: Color.fromRGBO(255, 87, 20, 1),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )
         ),
       ),
     );

@@ -13,6 +13,7 @@ dependencies:
   firebase_core: ^2.24.2
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.9
   google_sign_in: ^6.2.1
   permission_handler: ^11.1.0
 
@@ -23,3 +24,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+      - assets/svg/
