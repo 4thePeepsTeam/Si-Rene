@@ -52,7 +52,7 @@ class _MainState extends State<Main> {
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       // ignore: sized_box_for_whitespace
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: size.width,
           height: size.height,
           child: Column(
@@ -77,14 +77,14 @@ class _MainState extends State<Main> {
                       ElevatedButton(
                         style: ButtonStyle(
                           minimumSize: MaterialStatePropertyAll(Size(size.width, size.height * 0.08)),
-                          surfaceTintColor: MaterialStatePropertyAll(Colors.transparent),
-                          backgroundColor: MaterialStatePropertyAll(Color.fromRGBO(255, 87, 20, 1)),
+                          surfaceTintColor: const MaterialStatePropertyAll(Colors.transparent),
+                          backgroundColor: const MaterialStatePropertyAll(Color.fromRGBO(255, 87, 20, 1)),
                         ),
                          onPressed: () async {
                           userCredential = await signInWithGoogle();
                           if (userCredential != null) {
                             print(userCredential.user.email);
-                            print("credential: ${userCredential}");
+                            print("credential: $userCredential");
                               await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).get().then((value) async {
                               if (!value.exists) {
                                 await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
@@ -122,9 +122,9 @@ class _MainState extends State<Main> {
                       ElevatedButton(
                         style: ButtonStyle(
                           minimumSize: MaterialStatePropertyAll(Size(size.width, size.height * 0.08)),
-                          surfaceTintColor: MaterialStatePropertyAll(Colors.transparent),
-                          backgroundColor: MaterialStatePropertyAll(Colors.white),
-                          side: MaterialStatePropertyAll(
+                          surfaceTintColor: const MaterialStatePropertyAll(Colors.transparent),
+                          backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                          side: const MaterialStatePropertyAll(
                             BorderSide(
                               color: Color.fromRGBO(255, 87, 20, 1),
                             ),
