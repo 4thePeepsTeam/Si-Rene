@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sirene/data.dart';
-import 'package:sirene/main.dart';
+import 'package:sirene/data/agora_data.dart';
+import 'package:sirene/data/firestore_data.dart';
+import 'package:sirene/data/user_data.dart';
 
 class Call extends StatefulWidget {
   const Call({ Key? key }) : super(key: key);
@@ -14,8 +15,8 @@ class _CallState extends State<Call> {
 
   @override
   void dispose() async {
-    await removeCallData();
-    leave();
+    await FirestoreData.removeCallData();
+    AgoraData.leave();
     super.dispose();
   }
 
@@ -132,7 +133,7 @@ class _CallState extends State<Call> {
                 ]
               ),
               child: StreamBuilder(
-                stream: dataFireStore,
+                stream: FirestoreData.dataFireStore,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Center(
@@ -141,49 +142,49 @@ class _CallState extends State<Call> {
                   }
             
                   if (snapshot.hasData) {
-                    getFireData(snapshot);
+                    FirestoreData.getFireData(snapshot);
                     return ListView(
-                      children: List.generate(otherData.length, (index) {
+                      children: List.generate(FirestoreData.otherData.length, (index) {
                         return ListTile(
-                          title: Text("${otherData.entries.elementAt(index).value["name"]}"),
+                          title: Text("${FirestoreData.otherData.entries.elementAt(index).value["name"]}"),
                           trailing: Builder(
                             builder: (context) {
 
-                              if (yourData.entries.elementAt(0).value["isOnCall"] && otherData.entries.elementAt(index).value["caller"] == userCredential.user.uid) {
+                              if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"] && FirestoreData.otherData.entries.elementAt(index).value["caller"] == UserData.userCredential.user.uid) {
                                 return IconButton(
                                   onPressed: () async {
-                                    channelName = "";
-                                    print("channel name: $channelName");
-                                    await removeCallData();
-                                    leave();
+                                    AgoraData.channelName = "";
+                                    print("channel name: $AgoraData.channelName");
+                                    await FirestoreData.removeCallData();
+                                    AgoraData.leave();
                                   },
                                   icon: const Icon(Icons.call_rounded, color: Colors.red),
                                 );
                               }
                               
-                              if (yourData.entries.elementAt(0).value["isOnCall"] && yourData.entries.elementAt(0).value["caller"] == otherData.entries.elementAt(index).value["caller"]) {
+                              if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"] && FirestoreData.yourData.entries.elementAt(0).value["caller"] == FirestoreData.otherData.entries.elementAt(index).value["caller"]) {
                                 return SizedBox(
                                   width: MediaQuery.of(context).size.width * 0.3,
                                   child: Row(
                                     children: [
                                       IconButton(
                                         onPressed: () async {
-                                          await setupVoiceSDKEngine();
-                                          channelName = yourData[userCredential.user.uid]["caller"];
-                                          print("channel name: $channelName");
-                                          callingIndex = index;
+                                          await AgoraData.setupVoiceSDKEngine();
+                                          AgoraData.channelName = FirestoreData.yourData[UserData.userCredential.user.uid]["caller"];
+                                          print("channel name: $AgoraData.channelName");
+                                          AgoraData.callingIndex = index;
                                           print("calling index: $index");
-                                          join();
+                                          AgoraData.join();
                                         },
                                         icon: const Icon(Icons.call_rounded, color: Colors.green),
                                       ),
       
                                       IconButton(
                                         onPressed: () async {
-                                          channelName = "";
-                                          print("channel name: $channelName");
-                                          await removeCallData();
-                                          leave();
+                                          AgoraData.channelName = "";
+                                          print("channel name: $AgoraData.channelName");
+                                          await FirestoreData.removeCallData();
+                                          AgoraData.leave();
                                         },
                                         icon: const Icon(Icons.call_rounded, color: Colors.red),
                                       ),
@@ -192,29 +193,29 @@ class _CallState extends State<Call> {
                                 );
                               }
 
-                              if (yourData.entries.elementAt(0).value["isOnCall"]) {
+                              if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
                                 return const Icon(Icons.highlight_off_rounded);
                               }
                               
                               return IconButton(
                                 icon: const Icon(Icons.call_rounded),
                                 onPressed: () async {
-                                  await setupVoiceSDKEngine();
-                                  channelName = userCredential.user.uid;
-                                  await FirebaseFirestore.instance.collection("user").doc(otherData.entries.elementAt(index).key).set({
-                                    "caller": userCredential.user.uid,
+                                  await AgoraData.setupVoiceSDKEngine();
+                                  AgoraData.channelName = UserData.userCredential.user.uid;
+                                  await FirebaseFirestore.instance.collection("user").doc(FirestoreData.otherData.entries.elementAt(index).key).set({
+                                    "caller": UserData.userCredential.user.uid,
                                     "isOnCall": true,
                                   }, SetOptions(merge: true));
     
-                                  await FirebaseFirestore.instance.collection("user").doc(yourData.entries.elementAt(0).key).set({
-                                    "caller": userCredential.user.uid,
+                                  await FirebaseFirestore.instance.collection("user").doc(FirestoreData.yourData.entries.elementAt(0).key).set({
+                                    "caller": UserData.userCredential.user.uid,
                                     "isOnCall": true,
                                   }, SetOptions(merge: true));
     
-                                  print("channel name: $channelName");
-                                  callingIndex = index;
+                                  print("channel name: $AgoraData.channelName");
+                                  AgoraData.callingIndex = index;
                                   print("calling index: $index");
-                                  join();
+                                  AgoraData.join();
                                 },
                               );
                             }
@@ -241,9 +242,9 @@ class _CallState extends State<Call> {
             ),
             child: ElevatedButton(
               onPressed: () async {
-                bool result = await signOutFromGoogle();
+                bool result = await UserData.signOutFromGoogle();
                 if (result) {
-                  userCredential = "";
+                  UserData.userCredential = "";
                 }
                 Navigator.of(context).pop();
               },
