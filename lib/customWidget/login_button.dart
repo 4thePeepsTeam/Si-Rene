@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/callPage/call.dart';
 import 'package:sirene/data/agora_data.dart';
 import 'package:sirene/data/firestore_data.dart';
 import 'package:sirene/data/user_data.dart';
@@ -11,12 +10,14 @@ const LoginButton({
   required this.borderColor,
   required this.buttonText,
   required this.textColor, 
+  required this.widget,
 }) : super(key: key);
 
 final Color buttonColor;
 final Color borderColor;
 final String buttonText;
 final Color textColor;
+final Widget widget;
 
   @override
   Widget build(BuildContext context){
@@ -43,7 +44,7 @@ final Color textColor;
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return const Call();
+                return widget;
               },
             ),
           );

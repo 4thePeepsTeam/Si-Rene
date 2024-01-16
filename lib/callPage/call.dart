@@ -14,9 +14,8 @@ class Call extends StatefulWidget {
 class _CallState extends State<Call> {
 
   @override
-  void dispose() async {
-    await FirestoreData.removeCallData();
-    AgoraData.leave();
+  void dispose() {
+    AgoraData.agoraEngine.release();
     super.dispose();
   }
 
@@ -242,6 +241,8 @@ class _CallState extends State<Call> {
             ),
             child: ElevatedButton(
               onPressed: () async {
+                await FirestoreData.removeCallData();
+                AgoraData.leave();
                 bool result = await UserData.signOutFromGoogle();
                 if (result) {
                   UserData.userCredential = "";
