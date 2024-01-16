@@ -5,13 +5,13 @@ import 'package:sirene/data/user_data.dart';
 
 class LoginButton extends StatelessWidget {
 const LoginButton({ 
-  Key? key,
+  super.key,
   required this.buttonColor,
   required this.borderColor,
   required this.buttonText,
   required this.textColor, 
   required this.widget,
-}) : super(key: key);
+});
 
 final Color buttonColor;
 final Color borderColor;

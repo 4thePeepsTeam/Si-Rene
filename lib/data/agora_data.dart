@@ -35,7 +35,7 @@ mixin AgoraData {
       isJoin = false;
     }
     catch (x) {
-      print("engine is not initialized yet");
+      debugPrint("engine is not initialized yet");
     }
   }
 

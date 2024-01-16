@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/callPage/call.dart';
 import 'package:sirene/customWidget/login_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sirene/officerPage/home_page.dart';
-import 'package:sirene/userPage/home_page.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({ Key? key }) : super(key: key);
+  const AuthPage({ super.key });
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -48,7 +48,7 @@ class _AuthPageState extends State<AuthPage> {
                         buttonColor: Color.fromRGBO(255, 87, 20, 1),
                         buttonText: "Masuk sebagai User",
                         textColor: Colors.white,
-                        widget: HomePageUser(),
+                        widget: Call(),
                       ),
               
                       SizedBox(height: 10),

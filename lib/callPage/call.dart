@@ -5,17 +5,61 @@ import 'package:sirene/data/firestore_data.dart';
 import 'package:sirene/data/user_data.dart';
 
 class Call extends StatefulWidget {
-  const Call({ Key? key }) : super(key: key);
+  const Call({ super.key });
 
   @override
   State <Call> createState() => _CallState();
 }
 
-class _CallState extends State<Call> {
+class _CallState extends State<Call> with TickerProviderStateMixin {
+
+  late AnimationController _controllerBg1;
+  late AnimationController _controllerBg2;
+
+  late Animation <double> _bg1;
+  late Animation <double> _bg2;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllerBg1 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+
+    _bg1 = Tween(begin: 0.95, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controllerBg1,
+        curve: Curves.easeOutSine,
+      ),
+    );
+
+    _controllerBg2 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+
+    _bg2 = Tween(begin: 0.9, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controllerBg2,
+        curve: Curves.easeOutSine,
+      ),
+    );
+
+    _controllerBg1.repeat(reverse: true);
+    _controllerBg2.repeat(reverse: true);
+  }
+
 
   @override
   void dispose() {
-    AgoraData.agoraEngine.release();
+    try {
+      AgoraData.agoraEngine.release();
+    } catch (x) {
+      debugPrint("agora engine is not initialized yet");
+    }
+    _controllerBg1.dispose();
+    _controllerBg2.dispose();
     super.dispose();
   }
 
@@ -61,22 +105,32 @@ class _CallState extends State<Call> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Container(
-                    width: size.width * 0.8,
-                    height: size.width * 0.8,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color.fromRGBO(255, 87, 20, 0.1)
-                    ),
+                  AnimatedBuilder(
+                    animation: _controllerBg2,
+                    builder: (context, child) {
+                      return Container(
+                        width: size.width * 0.8 * _bg2.value,
+                        height: size.width * 0.8 * _bg2.value,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(255, 87, 20, 0.1)
+                        ),
+                      );
+                    },
                   ),
 
-                  Container(
-                    width: size.width * 0.75,
-                    height: size.width * 0.75,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color.fromRGBO(255, 87, 20, 0.4)
-                    ),
+                  AnimatedBuilder(
+                    animation: _controllerBg1,
+                    builder: (context, child) {
+                      return Container(
+                        width: size.width * 0.75 * _bg1.value,
+                        height: size.width * 0.75 * _bg1.value,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(255, 87, 20, 0.4)
+                        ),
+                      );
+                    },
                   ),
 
                   Container(
@@ -153,7 +207,7 @@ class _CallState extends State<Call> {
                                 return IconButton(
                                   onPressed: () async {
                                     AgoraData.channelName = "";
-                                    print("channel name: $AgoraData.channelName");
+                                    debugPrint("channel name: $AgoraData.channelName");
                                     await FirestoreData.removeCallData();
                                     AgoraData.leave();
                                   },
@@ -170,9 +224,9 @@ class _CallState extends State<Call> {
                                         onPressed: () async {
                                           await AgoraData.setupVoiceSDKEngine();
                                           AgoraData.channelName = FirestoreData.yourData[UserData.userCredential.user.uid]["caller"];
-                                          print("channel name: $AgoraData.channelName");
+                                          debugPrint("channel name: $AgoraData.channelName");
                                           AgoraData.callingIndex = index;
-                                          print("calling index: $index");
+                                          debugPrint("calling index: $index");
                                           AgoraData.join();
                                         },
                                         icon: const Icon(Icons.call_rounded, color: Colors.green),
@@ -181,7 +235,7 @@ class _CallState extends State<Call> {
                                       IconButton(
                                         onPressed: () async {
                                           AgoraData.channelName = "";
-                                          print("channel name: $AgoraData.channelName");
+                                          debugPrint("channel name: $AgoraData.channelName");
                                           await FirestoreData.removeCallData();
                                           AgoraData.leave();
                                         },
@@ -211,9 +265,9 @@ class _CallState extends State<Call> {
                                     "isOnCall": true,
                                   }, SetOptions(merge: true));
     
-                                  print("channel name: $AgoraData.channelName");
+                                  debugPrint("channel name: $AgoraData.channelName");
                                   AgoraData.callingIndex = index;
-                                  print("calling index: $index");
+                                  debugPrint("calling index: $index");
                                   AgoraData.join();
                                 },
                               );

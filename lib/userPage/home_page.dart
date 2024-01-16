@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePageUser extends StatefulWidget {
-  const HomePageUser({ Key? key }) : super(key: key);
+  const HomePageUser({ super.key });
 
   @override
   State<HomePageUser> createState() => _HomePageState();
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePageUser> {
                               blurRadius: 15,
                             ),
                             BoxShadow(
-                              color: const Color.fromRGBO(255, 87, 20, 1),
+                              color: Color.fromRGBO(255, 87, 20, 1),
                               blurRadius: 5,
                               spreadRadius: -5,
                             ),

@@ -25,10 +25,10 @@ mixin FirestoreData {
     yourData.removeWhere((key, value) => key != UserData.userCredential.user!.uid); // isinya diri sendiri
     otherData.removeWhere((key, value) => key == UserData.userCredential.user!.uid); // selain  diri sendiiri
 
-    print("anything: $anything");
-    print("allData: $allData");
-    print("yourData: $yourData");
-    print("otherData: $otherData");
+    debugPrint("anything: $anything");
+    debugPrint("allData: $allData");
+    debugPrint("yourData: $yourData");
+    debugPrint("otherData: $otherData");
   }
 
   static Future <void> removeCallData () async {
@@ -43,7 +43,7 @@ mixin FirestoreData {
       }
     } 
     catch (e) {
-      print("data is not initialized yet");
+      debugPrint("data is not initialized yet");
     }
 
     try {
@@ -55,7 +55,7 @@ mixin FirestoreData {
       }, SetOptions(merge: true));
     }
     catch (e) {
-      print("data is not initialized yet");
+      debugPrint("data is not initialized yet");
     }
   }
 }
