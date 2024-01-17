@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sirene/callPage/user_data.dart';
 import 'package:sirene/customWidget/bottom_icon.dart';
 import 'package:sirene/data/agora_data.dart';
+import 'package:sirene/data/auth_data.dart';
 import 'package:sirene/data/firestore_data.dart';
 
 class Call extends StatefulWidget {
@@ -187,69 +189,104 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                 Expanded(
                   flex: 6,
                   child: Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        AnimatedBuilder(
-                          animation: _controllerBg2,
-                          builder: (context, child) {
-                            return Container(
-                              width: size.width * 0.6 * _bg2.value,
-                              height: size.width * 0.6 * _bg2.value,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(255, 87, 20, 0.1)
-                              ),
-                            );
-                          },
-                        ),
-                  
-                        AnimatedBuilder(
-                          animation: _controllerBg1,
-                          builder: (context, child) {
-                            return Container(
-                              width: size.width * 0.55 * _bg1.value,
-                              height: size.width * 0.55 * _bg1.value,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color.fromRGBO(255, 87, 20, 0.4)
-                              ),
-                            );
-                          },
-                        ),
-                  
-                        Container(
-                          width: size.width * 0.5,
-                          height: size.width * 0.5,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromRGBO(255, 87, 20, 1),
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.call_rounded,
-                                  color: Colors.white,
-                                  size: size.width * 0.125,
-                                ),
-                        
-                                const SizedBox(height: 10),
-                        
-                                const Text(
-                                  "Panggil Ambulans",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.white,
+                    child: ValueListenableBuilder(
+                      valueListenable: isCalling,
+                      builder: (context, value, child) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            AnimatedBuilder(
+                              animation: _controllerBg2,
+                              builder: (context, child) {
+                                return Container(
+                                  width: size.width * 0.6 * _bg2.value,
+                                  height: size.width * 0.6 * _bg2.value,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromRGBO(255, 87, 20, 0.1)
                                   ),
-                                )
-                              ],
+                                );
+                              },
                             ),
-                          ),
-                        ),
-                      ],
+                                          
+                            AnimatedBuilder(
+                              animation: _controllerBg1,
+                              builder: (context, child) {
+                                return Container(
+                                  width: size.width * 0.55 * _bg1.value,
+                                  height: size.width * 0.55 * _bg1.value,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromRGBO(255, 87, 20, 0.4)
+                                  ),
+                                );
+                              },
+                            ),
+                                          
+                            GestureDetector(
+                              onTap: () async {
+                                if (value) {
+                                  isCalling.value = false;
+                                  AgoraData.channelName = "";
+                                  debugPrint("channel name: $AgoraData.channelName");
+                                  await FirestoreData.removeCallData();
+                                  AgoraData.leave();
+                                }
+                                else {
+                                  isCalling.value = true;
+                                  await AgoraData.setupVoiceSDKEngine();
+                                  AgoraData.channelName = UserData.userCredential.user.uid;
+                                  await FirebaseFirestore.instance.collection("user").doc(FirestoreData.otherData.entries.elementAt(0).key).set({
+                                    "caller": UserData.userCredential.user.uid,
+                                    "isOnCall": true,
+                                  }, SetOptions(merge: true));
+                              
+                                  await FirebaseFirestore.instance.collection("user").doc(FirestoreData.yourData.entries.elementAt(0).key).set({
+                                    "caller": UserData.userCredential.user.uid,
+                                    "isOnCall": true,
+                                  }, SetOptions(merge: true));
+                              
+                                  debugPrint("channel name: $AgoraData.channelName");
+                                  AgoraData.callingIndex = 0;
+                                  debugPrint("calling index: 0");
+                                  AgoraData.join();
+                                }
+                              },
+                              child: Container(
+                                width: size.width * 0.5,
+                                height: size.width * 0.5,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromRGBO(255, 87, 20, 1),
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        value ? Icons.phone_paused : Icons.call_rounded,
+                                        color: Colors.white,
+                                        size: size.width * 0.125,
+                                      ),
+                              
+                                      const SizedBox(height: 10),
+                              
+                                      Text(
+                                        value ? "Batalkan" : "Panggil Ambulans",
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
