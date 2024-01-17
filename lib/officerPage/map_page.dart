@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sirene/officerPage/bottom_icon.dart';
+import 'package:sirene/customWidget/bottom_icon.dart';
 import 'officer_data.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:slide_to_act/slide_to_act.dart';
@@ -192,7 +192,16 @@ class _MapPageState extends State<MapPage> {
         bottomNavigationBar: Container(
           width: size.width,
           height: size.height * 0.1,
-          color: const Color.fromRGBO(255, 255, 255, 1),
+          decoration: const BoxDecoration(
+          color: Color.fromRGBO(255, 255, 255, 1),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, -2),
+              color: Color.fromRGBO(0, 0, 0, 0.1),
+              blurRadius: 30,
+            ),
+          ],
+        ),
           child: Row(
             children: [
               Expanded(

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'agora_data.dart';
-import 'user_data.dart';
+import 'auth_data.dart';
 
 mixin FirestoreData {
   static Stream <QuerySnapshot<Object?>> dataFireStore = FirebaseFirestore.instance.collection('user').snapshots();
@@ -15,9 +15,9 @@ mixin FirestoreData {
 
     var anything = snapshot.data!.docs.map((e) => {e.id: e.data() as Map <String, dynamic>}).toList();
 
-    anything.forEach((element) {
+    for (var element in anything) {
       allData.addAll(element);
-    });
+    }
 
     otherData.addAll(allData);
     yourData.addAll(allData);

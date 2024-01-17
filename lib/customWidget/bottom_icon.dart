@@ -30,10 +30,12 @@ class _BottomIconState extends State<BottomIcon> {
               firstChild: Icon(
                 widget.icon,
                 color:const Color.fromRGBO(255, 87, 20, 1), 
+                size: 20,
               ),
               secondChild: Icon(
                 widget.icon,
                 color:const Color.fromRGBO(28, 27, 31, 1), 
+                size: 20,
               ),
               firstCurve: Curves.easeInOut,
               secondCurve: Curves.easeInOut,
@@ -51,12 +53,14 @@ class _BottomIconState extends State<BottomIcon> {
                 widget.label,
                 style: const TextStyle(
                   color:Color.fromRGBO(255, 87, 20, 1),
+                  fontSize: 12,
                 )
               ),
               secondChild: Text(
                 widget.label,
                 style: const TextStyle(
                   color:Color.fromRGBO(28, 27, 31, 1),
+                  fontSize: 12,
                 ),
               ),
               firstCurve: Curves.easeInOut,

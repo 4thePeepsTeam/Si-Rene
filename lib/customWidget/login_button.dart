@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/data/agora_data.dart';
 import 'package:sirene/data/firestore_data.dart';
-import 'package:sirene/data/user_data.dart';
+import 'package:sirene/data/auth_data.dart';
 
 class LoginButton extends StatelessWidget {
 const LoginButton({ 
