@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePageOfficer> {
                           ),
                           child: const Center(
                             child: Text(
-                              "Permohonan",
+                              "Request",
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Color.fromRGBO(0, 0, 0, 0.87),
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePageOfficer> {
                           ),
                           child: const Center(
                             child: Text(
-                              "Sedang Ditangani",
+                              "In Progress",
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Color.fromRGBO(0, 0, 0, 0.87),
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePageOfficer> {
                           ),
                           child: const Center(
                             child: Text(
-                              "Selesai",
+                              "Done",
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Color.fromRGBO(0, 0, 0, 0.87),
@@ -145,9 +145,9 @@ class _HomePageState extends State<HomePageOfficer> {
                               Expanded(
                                 flex: 3,
                                 child: Container(
-                                  width: size.width * 0.3,
-                                  height: size.height * 0.05,
-                                  margin: const EdgeInsets.all(10),
+                                  width: size.width * 0.2,
+                                  height: size.height * 0.02,
+                                  margin: const EdgeInsets.all(13),
                                   decoration: BoxDecoration(
                                     color: const Color.fromRGBO(239, 108, 0, 1),
                                     borderRadius: BorderRadius.circular(size.height),
@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePageOfficer> {
                                         child: Icon(
                                           Icons.notification_important_outlined,
                                           color: Colors.white,
-                                          size: 18,
+                                          size: 14,
                                         ),
                                       ),
                                       
@@ -170,6 +170,7 @@ class _HomePageState extends State<HomePageOfficer> {
                                           "Alert",
                                           style: TextStyle(
                                             color: Colors.white,
+                                            fontSize: 12, 
                                           ),
                                         ),
                                       ),
@@ -315,7 +316,7 @@ class _HomePageState extends State<HomePageOfficer> {
                                   elevation: 0,
                                   sliderButtonIconPadding: 10,
                                   borderRadius: 12.5,
-                                  text: "Sampai di Lokasi",
+                                  text: "Accept Request ",
                                   textStyle: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.white
@@ -328,7 +329,7 @@ class _HomePageState extends State<HomePageOfficer> {
 
                         return const Center(
                           child: Text(
-                            "Anda belum memiliki\npermohonan bantuan saat ini",
+                            "You don’t have any\npending requests at the moment.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color.fromRGBO(13, 1, 6, 1),
@@ -351,13 +352,219 @@ class _HomePageState extends State<HomePageOfficer> {
               if (snapshot.hasData) {
                 FirestoreData.getFireData(snapshot);
                 if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
-                  return BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                    child: Container(
-                      width: size.width,
-                      height: size.height,
-                      color: const Color.fromRGBO(0, 0, 0, 0.2),
-                    ),
+                  return Stack(
+                    children: [
+                      BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                        child: Container(
+                          width: size.width,
+                          height: size.height,
+                          color: const Color.fromRGBO(0, 0, 0, 0.2),
+                        ),
+                      ),
+
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          width: size.width * 0.85,
+                          height: size.height * 0.3,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: size.height * 0.1,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.1),
+                                blurRadius: 50,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: SvgPicture.asset(
+                                          "assets/svg/logo.svg",
+                                          width: size.width * 0.4,
+                                        ),
+                                      ),
+                                  
+                                      const Expanded(
+                                        flex: 2,
+                                        child: SizedBox.shrink(),
+                                      ),
+                                  
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          width: size.width * 0.2,
+                                          height: size.height * 0.04,
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromRGBO(239, 108, 0, 1),
+                                            borderRadius: BorderRadius.circular(size.height),
+                                          ),
+                                          child: const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Center(
+                                                child: Icon(
+                                                  Icons.notification_important_outlined,
+                                                  color: Colors.white,
+                                                  size: 14,
+                                                ),
+                                              ),
+                                              
+                                              SizedBox(width: 7.5),
+                                              
+                                              Center(
+                                                child: Text(
+                                                  "Alert",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12, 
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Text(
+                                            "Incoming Call",
+                                            style: TextStyle(
+                                              color: Color.fromRGBO(13, 1, 6, 1),
+                                              fontSize: 12,
+                                            ),
+                                          ),
+
+                                          Text(
+                                            "Ahmad Bagas Aditya",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 22,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      flex: 3,
+                                      child: Row(
+                                        children: [
+                                          const Expanded(
+                                            flex: 1,
+                                            child: SizedBox.shrink(),
+                                          ),
+
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.all(8),
+                                                  decoration: const BoxDecoration(
+                                                    color: Color.fromRGBO(225, 87, 20, 1),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.call_end,
+                                                    color: Color.fromRGBO(255, 254, 251, 1),
+                                                    size: 25,
+                                                  ),
+                                                ),
+
+                                                const SizedBox(height: 5),
+
+                                                const Text(
+                                                  "Reject",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+
+                                          const Expanded(
+                                            flex: 1,
+                                            child: SizedBox.shrink(),
+                                          ),
+
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.all(8),
+                                                  decoration: const BoxDecoration(
+                                                    color: Color.fromRGBO(27, 215, 65, 1),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.call,
+                                                    color: Color.fromRGBO(255, 254, 251, 1),
+                                                    size: 25,
+                                                  ),
+                                                ),
+
+                                                const SizedBox(height: 5),
+
+                                                const Text(
+                                                  "Accept",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+
+                                          const Expanded(
+                                            flex: 1,
+                                            child: SizedBox.shrink(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                  ],
+                                )
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   );
                 }
                 
