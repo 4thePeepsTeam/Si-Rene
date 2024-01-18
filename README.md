@@ -12,6 +12,11 @@ Developed by:
 -  Almaas Izdihar Sant `Hacker`
 
 ---
+## How to Install
+Go to Releases and download the Apk to install it on your Android device
+
+
+---
 ## Screenshots (Auth & Call Features)
 
 |Auth Page|Call Page|Call Public Service|Answer Call|
