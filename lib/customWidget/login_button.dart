@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sirene/data/agora_data.dart';
 import 'package:sirene/data/firestore_data.dart';
 import 'package:sirene/data/auth_data.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginButton extends StatelessWidget {
 const LoginButton({ 
@@ -51,11 +52,22 @@ final Widget widget;
         }   
       },
       child: Center(
-        child: Text(
-          buttonText,
-          style: TextStyle(
-            color: textColor
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              buttonColor == Colors.white ? "assets/svg/google_orange.svg" : "assets/svg/google_white.svg",
+            ),
+
+            SizedBox(width: 10),
+
+            Text(
+              buttonText,
+              style: TextStyle(
+                color: textColor
+              ),
+            ),
+          ],
         ),
       ),
     );

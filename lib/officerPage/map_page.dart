@@ -70,75 +70,101 @@ class _MapPageState extends State<MapPage> {
 
                         Container(
                           margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
                           width: size.width,
                           height: size.height * 0.1,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: const Color.fromRGBO(255, 254, 251, 1),
                           ),
-                          child: const Row(
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Icon(
-                                    Icons.info_outlined,
-                                    color: Color.fromRGBO(2, 136, 209, 1),
-                                  ),
-                                ),
-                              ),
-
-                              Expanded(
-                                flex: 5,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text(
-                                          "Lokasi Tujuan",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: SingleChildScrollView(
-                                          physics: BouncingScrollPhysics(),
-                                          scrollDirection: Axis.horizontal,
-                                          child: Text(
-                                            "Kost Wisna Arjuna, Sekaran, Gn. Pati",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              Expanded(
-                                flex: 1,
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Text(
-                                    "5 KM", 
-                                    style: TextStyle(
-                                      fontSize: 12,
+                              Row(
+                                children: [
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Icon(
+                                      Icons.my_location,
+                                      size: 20,
                                     ),
                                   ),
+                                                        
+                                  SizedBox(width: 10),
+                                                        
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      "Start",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 10
+                                      ),
+                                    ),
+                                  ),
+                                                        
+                                  SizedBox(width: 10),
+                                                        
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      "Your Location",
+                                      style: TextStyle(
+                                        fontSize: 10
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              
+                          
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: Divider(
+                                  height: 1,
                                 ),
+                              ),
+                          
+                              Row(
+                                children: [
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Icon(
+                                      Icons.fmd_bad,
+                                      size: 20,
+                                    ),
+                                  ),
+                                                        
+                                  SizedBox(width: 10),
+                                                        
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      "End",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 10
+                                      ),
+                                    ),
+                                  ),
+                                                        
+                                  SizedBox(width: 10),
+                                                        
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      "Jl. Dewi Sartika Barat, Sekaran, Gn. Pati",
+                                      style: TextStyle(
+                                        fontSize: 10
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -163,25 +189,85 @@ class _MapPageState extends State<MapPage> {
                       ),
                     ],
                   ),
-                  child: SlideAction(
-                    outerColor: const Color.fromRGBO(255, 87, 20, 1),
-                    sliderButtonIcon: const Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      color: Color.fromRGBO(255, 87, 20, 1),
-                      size: 16,
-                    ),
-                    onSubmit: () {
-                      return Future.delayed(const Duration(seconds: 2));
+                  child: ValueListenableBuilder(
+                    valueListenable: slideNumber,
+                    builder: (context, value, child) {
+                      if (value == 0) {
+                        return SlideAction(
+                          outerColor: const Color.fromRGBO(255, 87, 20, 1),
+                          sliderButtonIcon: const Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            color: Color.fromRGBO(255, 87, 20, 1),
+                            size: 16,
+                          ),
+                          onSubmit: () {
+                            return Future.delayed(const Duration(seconds: 2), () {
+                              slideNumber.value++;
+                            });
+                          },
+                          sliderRotate: false,
+                          elevation: 0,
+                          sliderButtonIconPadding: 10,
+                          borderRadius: 12.5,
+                          text: "Start Journey",
+                          textStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white
+                          ),
+                        );
+                      }
+
+                      if (value == 1) {
+                        return SlideAction(
+                          outerColor: const Color.fromRGBO(255, 87, 20, 1),
+                          sliderButtonIcon: const Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            color: Color.fromRGBO(255, 87, 20, 1),
+                            size: 16,
+                          ),
+                          onSubmit: () {
+                            return Future.delayed(const Duration(seconds: 2), () {
+                              slideNumber.value++;
+                            });
+                          },
+                          sliderRotate: false,
+                          elevation: 0,
+                          sliderButtonIconPadding: 10,
+                          borderRadius: 12.5,
+                          text: "Mark As Arrived",
+                          textStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white
+                          ),
+                        );
+                      }
+
+                      return SlideAction(
+                        outerColor: const Color.fromRGBO(255, 87, 20, 1),
+                        sliderButtonIcon: const Icon(
+                          Icons.arrow_forward_ios_sharp,
+                          color: Color.fromRGBO(255, 87, 20, 1),
+                          size: 16,
+                        ),
+                        onSubmit: () {
+                          return Future.delayed(const Duration(seconds: 2), () {
+                            slideNumber.value = 0;
+                            hasOrder.value = false;
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        sliderRotate: false,
+                        elevation: 0,
+                        sliderButtonIconPadding: 10,
+                        borderRadius: 12.5,
+                        text: "Mark As Done",
+                        textStyle: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white
+                        ),
+                      );
+
                     },
-                    sliderRotate: false,
-                    elevation: 0,
-                    sliderButtonIconPadding: 10,
-                    borderRadius: 12.5,
-                    text: "Sampai di Lokasi",
-                    textStyle: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.white
-                    ),
                   ),
                 ),
               ),
@@ -218,7 +304,7 @@ class _MapPageState extends State<MapPage> {
                       child: BottomIcon(
                         listenable: isHome,
                         icon: Icons.home_filled,
-                        label: "Beranda",
+                        label: "Home",
                       )
                     ),
                   ),
@@ -237,7 +323,7 @@ class _MapPageState extends State<MapPage> {
                     child: BottomIcon(
                       listenable: isNotification,
                       icon: Icons.notifications,
-                      label: "Notifikasi",
+                      label: "Notification",
                     )
                   ),
                 ),
@@ -257,7 +343,7 @@ class _MapPageState extends State<MapPage> {
                       child: BottomIcon(
                         listenable: isProfile,
                         icon: Icons.person,
-                        label: "Profil",
+                        label: "Profile",
                       )
                     ),
                   ),

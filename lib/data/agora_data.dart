@@ -9,8 +9,10 @@ import 'auth_data.dart';
 mixin AgoraData {
   static late RtcEngine agoraEngine; 
   static String channelName = "";
-  static int uid = 0;
+  static int uid = 1;
   static bool isJoin = false;
+  static bool isMute = false;
+  static bool isSpeaker = false;
 
   static int callingIndex = -1;
 
@@ -27,6 +29,9 @@ mixin AgoraData {
         options: options,
         uid: uid,
     );
+
+    agoraEngine.adjustPlaybackSignalVolume(100);
+    agoraEngine.adjustRecordingSignalVolume(100);
   }
 
   static void leave() async {
@@ -50,6 +55,8 @@ mixin AgoraData {
   static Future<void> setupVoiceSDKEngine() async {
     // retrieve or request microphone permission
     await [Permission.microphone].request();
+    await [Permission.audio].request();
+    await [Permission.phone].request();
 
     //create an instance of the Agora engine
     agoraEngine = createAgoraRtcEngine();
@@ -62,18 +69,21 @@ mixin AgoraData {
     RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
           showMessage("Local user uid:${connection.localUid} joined the channel");
+          debugPrint("\n\n\n\n\njoin success\n\n\n\n\n");
           await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
             "isOnCall": true,
           }, SetOptions(merge: true));
         },
         onUserJoined: (RtcConnection connection, int rUid, int elapsed) async {
           showMessage("Remote user uid:$rUid joined the channel");
+          debugPrint("\n\n\n\n\nuser joined\n\n\n\n\n");
           await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
             "remoteUid": rUid,
           }, SetOptions(merge: true));
         },
         onUserOffline: (RtcConnection connection, int? rUid, UserOfflineReasonType reason) async {
           showMessage("Remote user uid:$rUid left the channel");
+          debugPrint("\n\n\n\n\nuser offline\n\n\n\n\n");
           await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
             "remoteUid": "",
           }, SetOptions(merge: true));

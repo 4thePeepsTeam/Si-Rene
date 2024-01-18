@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/callPage/call.dart';
+import 'package:sirene/callPage/home_call.dart';
 import 'package:sirene/customWidget/login_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sirene/officerPage/home_page.dart';
@@ -36,30 +36,81 @@ class _AuthPageState extends State<AuthPage> {
                 ),
               ),
         
-              const Expanded(
+              Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      LoginButton(
+                      const LoginButton(
                         borderColor: Colors.transparent,
                         buttonColor: Color.fromRGBO(255, 87, 20, 1),
-                        buttonText: "Masuk sebagai User",
+                        buttonText: "Continue with Google as User",
                         textColor: Colors.white,
-                        widget: Call(),
+                        widget: HomeCall(),
                       ),
               
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
-                      LoginButton(
+                      const LoginButton(
                         borderColor: Color.fromRGBO(255, 87, 20, 1),
                         buttonColor: Colors.white,
-                        buttonText: "Masuk sebagai Officer",
+                        buttonText: "Continue with Google as User",
                         textColor: Color.fromRGBO(255, 87, 20, 1),
                         widget: HomePageOfficer(),
                       ),
+
+                      const SizedBox(height: 20),
+
+                      Center(
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: const TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "By signing up, you agree to the ",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(13, 1, 6, 1),
+                                  fontSize: 9,
+                                ),
+                              ),
+
+                              TextSpan(
+                                text: "Terms of Service ",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(255, 87, 20, 1),
+                                  fontSize: 9,
+                                ),
+                              ),
+
+                              TextSpan(
+                                text: "and\n",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(13, 1, 6, 1),
+                                  fontSize: 9,
+                                ),
+                              ),
+
+                              TextSpan(
+                                text: "Privacy Policy",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(255, 87, 20, 1),
+                                  fontSize: 9,
+                                ),
+                              ),
+
+                              TextSpan(
+                                text: ", including Cookie Use",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(13, 1, 6, 1),
+                                  fontSize: 9,
+                                ),
+                              ),
+                            ]
+                          ),
+                        )
+                      )
                     ],
                   ),
                 ),

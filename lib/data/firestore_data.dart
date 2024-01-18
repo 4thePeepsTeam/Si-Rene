@@ -40,6 +40,14 @@ mixin FirestoreData {
           "remoteUid": "",
           "calling": "",
         }, SetOptions(merge: true));
+      } 
+      else {
+        await FirebaseFirestore.instance.collection("user").doc(yourData[UserData.userCredential.user.uid]["caller"]).set({
+          "caller": "",
+          "isOnCall": false,
+          "remoteUid": "",
+          "calling": "",
+        }, SetOptions(merge: true));
       }
     } 
     catch (e) {

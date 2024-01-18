@@ -1,11 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sirene/customWidget/bottom_icon.dart';
+import 'package:sirene/data/agora_data.dart';
 import 'package:sirene/data/auth_data.dart';
 import 'package:sirene/data/firestore_data.dart';
 import 'package:sirene/officerPage/map_page.dart';
 import 'package:sirene/officerPage/officer_data.dart';
+import 'package:sirene/officerPage/on_call.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 class HomePageOfficer extends StatefulWidget {
@@ -351,6 +354,7 @@ class _HomePageState extends State<HomePageOfficer> {
 
               if (snapshot.hasData) {
                 FirestoreData.getFireData(snapshot);
+                // FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]
                 if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
                   return Stack(
                     children: [
@@ -489,16 +493,24 @@ class _HomePageState extends State<HomePageOfficer> {
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  padding: const EdgeInsets.all(8),
-                                                  decoration: const BoxDecoration(
-                                                    color: Color.fromRGBO(225, 87, 20, 1),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.call_end,
-                                                    color: Color.fromRGBO(255, 254, 251, 1),
-                                                    size: 25,
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    AgoraData.channelName = "";
+                                                    debugPrint("channel name: ${AgoraData.channelName}");
+                                                    await FirestoreData.removeCallData();
+                                                    AgoraData.leave();
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets.all(8),
+                                                    decoration: const BoxDecoration(
+                                                      color: Color.fromRGBO(225, 87, 20, 1),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.call_end,
+                                                      color: Color.fromRGBO(255, 254, 251, 1),
+                                                      size: 25,
+                                                    ),
                                                   ),
                                                 ),
 
@@ -524,16 +536,32 @@ class _HomePageState extends State<HomePageOfficer> {
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  padding: const EdgeInsets.all(8),
-                                                  decoration: const BoxDecoration(
-                                                    color: Color.fromRGBO(27, 215, 65, 1),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.call,
-                                                    color: Color.fromRGBO(255, 254, 251, 1),
-                                                    size: 25,
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    await AgoraData.setupVoiceSDKEngine();
+                                                    AgoraData.channelName = FirestoreData.yourData[UserData.userCredential.user.uid]["caller"];
+                                                    debugPrint("channel name: ${AgoraData.channelName}");
+                                                    AgoraData.join();
+                                                    hasOrder.value = true;
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return const OnCall();
+                                                        },
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets.all(8),
+                                                    decoration: const BoxDecoration(
+                                                      color: Color.fromRGBO(27, 215, 65, 1),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.call,
+                                                      color: Color.fromRGBO(255, 254, 251, 1),
+                                                      size: 25,
+                                                    ),
                                                   ),
                                                 ),
 
@@ -606,7 +634,7 @@ class _HomePageState extends State<HomePageOfficer> {
                     child: BottomIcon(
                       listenable: isHome,
                       icon: Icons.home_filled,
-                      label: "Beranda",
+                      label: "Home",
                     )
                   ),
                 ),
@@ -625,7 +653,7 @@ class _HomePageState extends State<HomePageOfficer> {
                   child: BottomIcon(
                     listenable: isNotification,
                     icon: Icons.notifications,
-                    label: "Notifikasi",
+                    label: "Notification",
                   )
                 ),
               ),
@@ -645,7 +673,7 @@ class _HomePageState extends State<HomePageOfficer> {
                     child: BottomIcon(
                       listenable: isProfile,
                       icon: Icons.person,
-                      label: "Profil",
+                      label: "Profile",
                     )
                   ),
                 ),
@@ -657,27 +685,3 @@ class _HomePageState extends State<HomePageOfficer> {
     );
   }
 }
-
-// ElevatedButton(
-//               onPressed: () {
-//                 Navigator.of(context).push(
-//                   MaterialPageRoute(
-//                     builder: (context) {
-//                       return const MapPage();
-//                     },
-//                   ),
-//                 );
-//               },
-//               child: const Text("To next page"),
-//             ),
-
-//             ElevatedButton(
-//               onPressed: () async {
-//                 bool result = await UserData.signOutFromGoogle();
-//                 if (result) {
-//                   UserData.userCredential = "";
-//                 }
-//                 Navigator.of(context).pop();
-//               },
-//               child: const Text("Logout"),
-//             ),

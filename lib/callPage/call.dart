@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sirene/callPage/user_data.dart';
-import 'package:sirene/customWidget/bottom_icon.dart';
 import 'package:sirene/data/agora_data.dart';
 import 'package:sirene/data/auth_data.dart';
 import 'package:sirene/data/firestore_data.dart';
+import 'package:sirene/callPage/on_call.dart';
 
 class Call extends StatefulWidget {
   const Call({ super.key });
@@ -111,7 +111,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                 child: Align(
                                   alignment: Alignment.bottomLeft,
                                   child: Text(
-                                    "Lokasimu Sekarang",
+                                    "Your Location",
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -146,7 +146,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                           child: Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                              "UBAH", 
+                              "CHANGE", 
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
@@ -167,7 +167,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        "Panggil Ambulans",
+                        "Call Ambulance",
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold
@@ -175,7 +175,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                       ),
                   
                       Text(
-                        "Tekan tombol untuk mencari bantuan ambulans terdekat",
+                        "Press the button to find the nearest ambulance for help",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 10,
@@ -189,9 +189,99 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                 Expanded(
                   flex: 6,
                   child: Center(
-                    child: ValueListenableBuilder(
-                      valueListenable: isCalling,
-                      builder: (context, value, child) {
+                    child: StreamBuilder(
+                      stream: FirestoreData.dataFireStore,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          FirestoreData.getFireData(snapshot);
+                          if (FirestoreData.yourData.entries.elementAt(0).value["remoteUid"] != "") {
+                            WidgetsBinding.instance.addPostFrameCallback(
+                              (_) => Navigator.push(context,
+                                MaterialPageRoute(
+                                  builder: (context) => const OnCall(),
+                                ),
+                              ),
+                            );
+                            return const SizedBox.shrink();
+                          }
+
+                          if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                AnimatedBuilder(
+                                  animation: _controllerBg2,
+                                  builder: (context, child) {
+                                    return Container(
+                                      width: size.width * 0.6 * _bg2.value,
+                                      height: size.width * 0.6 * _bg2.value,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color.fromRGBO(255, 87, 20, 0.1)
+                                      ),
+                                    );
+                                  },
+                                ),
+                                              
+                                AnimatedBuilder(
+                                  animation: _controllerBg1,
+                                  builder: (context, child) {
+                                    return Container(
+                                      width: size.width * 0.55 * _bg1.value,
+                                      height: size.width * 0.55 * _bg1.value,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color.fromRGBO(255, 87, 20, 0.4)
+                                      ),
+                                    );
+                                  },
+                                ),
+                                              
+                                GestureDetector(
+                                  onTap: () async {
+                                    isCalling.value = false;
+                                    AgoraData.channelName = "";
+                                    debugPrint("channel name: $AgoraData.channelName");
+                                    await FirestoreData.removeCallData();
+                                    AgoraData.leave();
+                                  },
+                                  child: Container(
+                                    width: size.width * 0.5,
+                                    height: size.width * 0.5,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color.fromRGBO(255, 87, 20, 1),
+                                    ),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.phone_paused,
+                                            color: Colors.white,
+                                            size: size.width * 0.125,
+                                          ),
+                                  
+                                          const SizedBox(height: 10),
+                                  
+                                          const Text(
+                                            "Batalkan",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        }
+
                         return Stack(
                           alignment: Alignment.center,
                           children: [
@@ -225,32 +315,23 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                           
                             GestureDetector(
                               onTap: () async {
-                                if (value) {
-                                  isCalling.value = false;
-                                  AgoraData.channelName = "";
-                                  debugPrint("channel name: $AgoraData.channelName");
-                                  await FirestoreData.removeCallData();
-                                  AgoraData.leave();
-                                }
-                                else {
-                                  isCalling.value = true;
-                                  await AgoraData.setupVoiceSDKEngine();
-                                  AgoraData.channelName = UserData.userCredential.user.uid;
-                                  await FirebaseFirestore.instance.collection("user").doc(FirestoreData.otherData.entries.elementAt(0).key).set({
-                                    "caller": UserData.userCredential.user.uid,
-                                    "isOnCall": true,
-                                  }, SetOptions(merge: true));
-                              
-                                  await FirebaseFirestore.instance.collection("user").doc(FirestoreData.yourData.entries.elementAt(0).key).set({
-                                    "caller": UserData.userCredential.user.uid,
-                                    "isOnCall": true,
-                                  }, SetOptions(merge: true));
-                              
-                                  debugPrint("channel name: $AgoraData.channelName");
-                                  AgoraData.callingIndex = 0;
-                                  debugPrint("calling index: 0");
-                                  AgoraData.join();
-                                }
+                                isCalling.value = true;
+                                await AgoraData.setupVoiceSDKEngine();
+                                AgoraData.channelName = UserData.userCredential.user.uid;
+                                await FirebaseFirestore.instance.collection("user").doc(FirestoreData.otherData.entries.elementAt(0).key).set({
+                                  "caller": UserData.userCredential.user.uid,
+                                  "isOnCall": true,
+                                }, SetOptions(merge: true));
+                            
+                                await FirebaseFirestore.instance.collection("user").doc(FirestoreData.yourData.entries.elementAt(0).key).set({
+                                  "caller": UserData.userCredential.user.uid,
+                                  "isOnCall": true,
+                                }, SetOptions(merge: true));
+                            
+                                debugPrint("channel name: $AgoraData.channelName");
+                                AgoraData.callingIndex = 0;
+                                debugPrint("calling index: 0");
+                                AgoraData.join();
                               },
                               child: Container(
                                 width: size.width * 0.5,
@@ -264,17 +345,17 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        value ? Icons.phone_paused : Icons.call_rounded,
+                                        Icons.call_rounded,
                                         color: Colors.white,
                                         size: size.width * 0.125,
                                       ),
                               
                                       const SizedBox(height: 10),
                               
-                                      Text(
-                                        value ? "Batalkan" : "Panggil Ambulans",
+                                      const Text(
+                                        "Call Ambulance",
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 10,
                                           color: Colors.white,
                                         ),
@@ -336,7 +417,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                       flex: 3,
                                       child: Align(
                                         alignment: Alignment.centerLeft,
-                                        child: Text("Lihat Pilihan Lain"),
+                                        child: Text("See related services"),
                                       )
                                     ),
                                     Expanded(
@@ -475,100 +556,6 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                 )
               ),
             )
-          ],
-        ),
-      ),
-
-      bottomNavigationBar: Container(
-        width: size.width,
-        height: size.height * 0.1,
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 1),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, -2),
-              color: Color.fromRGBO(0, 0, 0, 0.1),
-              blurRadius: 30,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    isHome.value = true;
-                    isHistory.value = false;
-                    isNotification.value = false;
-                    isProfile.value = false;
-                  },
-                  child: BottomIcon(
-                    listenable: isHome,
-                    icon: Icons.home_filled,
-                    label: "Beranda",
-                  )
-                ),
-              ),
-            ),
-
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    isHome.value = false;
-                    isHistory.value = true;
-                    isNotification.value = false;
-                    isProfile.value = false;
-                  },
-                  child: BottomIcon(
-                    listenable: isHistory,
-                    icon: Icons.history,
-                    label: "Riwayat",
-                  )
-                ),
-              ),
-            ),
-
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    isHome.value = false;
-                    isHistory.value = false;
-                    isNotification.value = true;
-                    isProfile.value = false;
-                  },
-                  child: BottomIcon(
-                    listenable: isNotification,
-                    icon: Icons.notifications,
-                    label: "Notifikasi",
-                  )
-                ),
-              ),
-            ),
-
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    isHome.value = false;
-                    isHistory.value = false;
-                    isNotification.value = false;
-                    isProfile.value = true;
-                  },
-                  child: BottomIcon(
-                    listenable: isProfile,
-                    icon: Icons.person,
-                    label: "Profil",
-                  )
-                ),
-              ),
-            ),
           ],
         ),
       ),
