@@ -1,15 +1,14 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-class BlurWidget extends StatelessWidget {
-const BlurWidget({ super.key });
+class Background extends StatelessWidget {
+const Background({ super.key });
 
   @override
   Widget build(BuildContext context){
 
     Size size = MediaQuery.of(context).size;
-    
+
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
       child: Container(

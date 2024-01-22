@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/globalData/firestore_data.dart';
-import 'package:sirene/officer/page/home/component/call_alert/background/blur_widget.dart';
-import 'package:sirene/officer/page/home/component/call_alert/content/content_widget.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/background/background.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/content.dart';
 
 class CallAlert extends StatefulWidget {
   const CallAlert({ super.key });
@@ -11,6 +11,11 @@ class CallAlert extends StatefulWidget {
 }
 
 class _CallAlertState extends State<CallAlert> {
+
+  bool isGetCall() {
+    return FirestoreData.yourData.entries.elementAt(0).value["isOnCall"];
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -20,12 +25,12 @@ class _CallAlertState extends State<CallAlert> {
         if (snapshot.hasData) {
           FirestoreData.getFireData(snapshot);
 
-          if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
+          if (isGetCall()) {
             return const Stack(
               children: [
-                BlurWidget(),
+                Background(),
 
-                ContentWidget(),
+                Content(),
               ],
             );
           }

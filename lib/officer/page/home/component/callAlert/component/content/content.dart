@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/officer/page/home/component/call_alert/content/component/body/alert_body.dart';
-import 'package:sirene/officer/page/home/component/call_alert/content/component/header/header.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/body/alert_body.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/header/alert_header.dart';
 
-class ContentWidget extends StatefulWidget {
-  const ContentWidget({ super.key });
+class Content extends StatefulWidget {
+  const Content({ Key? key }) : super(key: key);
 
   @override
-  State <ContentWidget> createState() => _ContentWidgetState();
+  _ContentState createState() => _ContentState();
 }
 
-class _ContentWidgetState extends State<ContentWidget> {
+class _ContentState extends State<Content> {
   @override
   Widget build(BuildContext context) {
 
@@ -40,7 +40,7 @@ class _ContentWidgetState extends State<ContentWidget> {
           children: [
             Expanded(
               flex: 1,
-              child: Header()
+              child: AlertHeader(),
             ),
 
             Expanded(
