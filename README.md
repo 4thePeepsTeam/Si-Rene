@@ -12,9 +12,16 @@ Developed by:
 -  Almaas Izdihar Sant `Hacker`
 
 ---
-## Screenshots (Auth & Call Features)
+## How to Install
+Go to [Releases](https://github.com/4thePeepsTeam/Si-Rene/releases/) and download the Apk to install it on your Android device
 
-|Auth Page|Call Page|Call Public Service|Answer Call|
-|----|----|----|-----|
-|![si-rene-login](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/9b83fb73-4dd5-4cf0-b1e9-052f83003128)|![si-rene-home](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/c64eba1b-c33f-42f7-b8da-ed07da577a76)|![si-rene-call](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/a03297c2-b517-4e1f-92b3-38d1900318e5)|![si-rene-call-answer](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/469c92a0-9187-4bbb-a233-fbf3e6897286)|
+
+---
+## Preview
+
+- Customer App
+![Frame 4324 (1)](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/ff1c271b-f5cc-4c21-86d7-112e34703b78)
+
+- Officer App
+![Frame 4325 (1)](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/3a6385f4-3f0c-4911-aa5f-c28fe5d7226c)
 
