@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/callPage/user_data.dart';
-import 'package:sirene/data/agora_data.dart';
-import 'package:sirene/data/firestore_data.dart';
+import 'package:sirene/globalData/agora_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
 
 class OnCall extends StatefulWidget {
   const OnCall({ super.key });

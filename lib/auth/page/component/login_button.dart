@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/data/agora_data.dart';
-import 'package:sirene/data/firestore_data.dart';
-import 'package:sirene/data/auth_data.dart';
+import 'package:sirene/globalData/agora_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
+import 'package:sirene/globalData/auth_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginButton extends StatelessWidget {
@@ -59,7 +59,7 @@ final Widget widget;
               buttonColor == Colors.white ? "assets/svg/google_orange.svg" : "assets/svg/google_white.svg",
             ),
 
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
 
             Text(
               buttonText,

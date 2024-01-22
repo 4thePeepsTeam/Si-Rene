@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sirene/callPage/activity.dart';
 import 'package:sirene/callPage/call.dart';
 import 'package:sirene/callPage/user_data.dart';
-import 'package:sirene/customWidget/bottom_icon.dart';
+import 'package:sirene/globalWidget/bottom_icon.dart';
 
 class HomeCall extends StatefulWidget {
   const HomeCall({ super.key });

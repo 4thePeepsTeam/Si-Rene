@@ -1,14 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sirene/customWidget/bottom_icon.dart';
-import 'package:sirene/data/agora_data.dart';
-import 'package:sirene/data/auth_data.dart';
-import 'package:sirene/data/firestore_data.dart';
-import 'package:sirene/officerPage/map_page.dart';
-import 'package:sirene/officerPage/officer_data.dart';
-import 'package:sirene/officerPage/on_call.dart';
+import 'package:sirene/globalData/agora_data.dart';
+import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
+import 'package:sirene/officer/page/home/component/bottomNavigationBar/custom_bottom_navigation_bar.dart';
+import 'package:sirene/officer/page/home/component/header/header.dart';
+import 'package:sirene/officer/page/home/component/tab/custom_tab.dart';
+import 'package:sirene/officer/page/map/map_page.dart';
+import 'package:sirene/officer/data/officer_data.dart';
+import 'package:sirene/officer/page/call/on_call.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 class HomePageOfficer extends StatefulWidget {
@@ -21,7 +22,9 @@ class HomePageOfficer extends StatefulWidget {
 class _HomePageState extends State<HomePageOfficer> {
   @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
+    
     return Scaffold(
       body: Stack(
         children: [
@@ -31,101 +34,14 @@ class _HomePageState extends State<HomePageOfficer> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
+                const Expanded(
                   flex: 2,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/svg/officer_header.svg",
-                          height: size.height * 0.05,
-                        ),
-            
-                        IconButton(
-                          icon: const Icon(Icons.logout),
-                          onPressed: () async {
-                            bool result = await UserData.signOutFromGoogle();
-                            if (result) {
-                              UserData.userCredential = "";
-                            }
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
-                  )
+                  child: Header(),
                 ),
                 
-                Expanded(
+                const Expanded(
                   flex: 1,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: size.height * 0.05,
-                          padding: const EdgeInsets.all(7.5),
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(0, 0, 0, 0.08),
-                            borderRadius: BorderRadius.circular(size.height),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "Request",
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Color.fromRGBO(0, 0, 0, 0.87),
-                              ),
-                            ),
-                          ),
-                        ),
-            
-                        Container(
-                          height: size.height * 0.05,
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
-                          padding: const EdgeInsets.all(7.5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromRGBO(189, 189, 189, 1),
-                            ),
-                            borderRadius: BorderRadius.circular(size.height),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "In Progress",
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Color.fromRGBO(0, 0, 0, 0.87),
-                              ),
-                            ),
-                          ),
-                        ),
-            
-                        Container(
-                          height: size.height * 0.05,
-                          padding: const EdgeInsets.all(7.5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromRGBO(189, 189, 189, 1),
-                            ),
-                            borderRadius: BorderRadius.circular(size.height),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "Done",
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Color.fromRGBO(0, 0, 0, 0.87),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: CustomTab(),
                 ),
             
                 Expanded(
@@ -354,7 +270,6 @@ class _HomePageState extends State<HomePageOfficer> {
 
               if (snapshot.hasData) {
                 FirestoreData.getFireData(snapshot);
-                // FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]
                 if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
                   return Stack(
                     children: [
@@ -543,13 +458,15 @@ class _HomePageState extends State<HomePageOfficer> {
                                                     debugPrint("channel name: ${AgoraData.channelName}");
                                                     AgoraData.join();
                                                     hasOrder.value = true;
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (context) {
-                                                          return const OnCall();
-                                                        },
-                                                      ),
-                                                    );
+                                                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                      Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) {
+                                                            return const OnCall();
+                                                          },
+                                                        ),
+                                                      );
+                                                    });
                                                   },
                                                   child: Container(
                                                     padding: const EdgeInsets.all(8),
@@ -605,83 +522,7 @@ class _HomePageState extends State<HomePageOfficer> {
         ],
       ),
 
-      bottomNavigationBar: Container(
-        width: size.width,
-        height: size.height * 0.1,
-        decoration: const BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 1),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, -2),
-            color: Color.fromRGBO(0, 0, 0, 0.1),
-            blurRadius: 30,
-          ),
-        ],
-      ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      isHome.value = true;
-                      isNotification.value = false;
-                      isProfile.value = false;
-                    },
-                    child: BottomIcon(
-                      listenable: isHome,
-                      icon: Icons.home_filled,
-                      label: "Home",
-                    )
-                  ),
-                ),
-              ),
-            ),
-
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    isHome.value = false;
-                    isNotification.value = true;
-                    isProfile.value = false;
-                  },
-                  child: BottomIcon(
-                    listenable: isNotification,
-                    icon: Icons.notifications,
-                    label: "Notification",
-                  )
-                ),
-              ),
-            ),
-
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      isHome.value = false;
-                      isNotification.value = false;
-                      isProfile.value = true;
-                    },
-                    child: BottomIcon(
-                      listenable: isProfile,
-                      icon: Icons.person,
-                      label: "Profile",
-                    )
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }

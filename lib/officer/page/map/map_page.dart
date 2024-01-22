@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sirene/customWidget/bottom_icon.dart';
-import 'officer_data.dart';
+import 'package:sirene/globalWidget/bottom_icon.dart';
+import '../../data/officer_data.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 

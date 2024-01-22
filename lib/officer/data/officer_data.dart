@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_route_service/open_route_service.dart';
-import 'package:sirene/data/private.dart';
+import 'package:sirene/globalData/private.dart';
 
 ValueNotifier isHome = ValueNotifier <bool> (true);
 ValueNotifier isNotification = ValueNotifier <bool> (false);

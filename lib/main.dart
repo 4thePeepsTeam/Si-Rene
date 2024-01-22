@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sirene/authPage/auth_page.dart';
-import 'package:sirene/data/firebase_options.dart';
+import 'package:sirene/auth/page/auth_page.dart';
+import 'package:sirene/globalData/firebase_options.dart';
 
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

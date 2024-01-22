@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/data/agora_data.dart';
-import 'package:sirene/data/firestore_data.dart';
+import 'package:sirene/globalData/agora_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
 
 class OnCall extends StatefulWidget {
   const OnCall({ super.key });
@@ -105,38 +105,38 @@ class _OnCallState extends State<OnCall> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  // if (AgoraData.isMute) {
-                                  //   await AgoraData.agoraEngine.enableLocalAudio(false).then((value) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text("mute off"),
-                                  //       ), 
-                                  //     );
-                                  //   }).onError((error, stackTrace) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       SnackBar(
-                                  //         content: Text("error $error"),
-                                  //       ), 
-                                  //     );
-                                  //   });
-                                  //   AgoraData.isMute = false;
-                                  // }
-                                  // else {
-                                  //   await AgoraData.agoraEngine.enableLocalAudio(true).then((value) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text("mute on"),
-                                  //       ), 
-                                  //     );
-                                  //   }).onError((error, stackTrace) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       SnackBar(
-                                  //         content: Text("error $error"),
-                                  //       ), 
-                                  //     );
-                                  //   });
-                                  //   AgoraData.isMute = true;
-                                  // }
+                                  if (AgoraData.isMute) {
+                                    await AgoraData.agoraEngine.enableLocalAudio(false).then((value) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text("mute off"),
+                                        ), 
+                                      );
+                                    }).onError((error, stackTrace) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("error $error"),
+                                        ), 
+                                      );
+                                    });
+                                    AgoraData.isMute = false;
+                                  }
+                                  else {
+                                    await AgoraData.agoraEngine.enableLocalAudio(true).then((value) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text("mute on"),
+                                        ), 
+                                      );
+                                    }).onError((error, stackTrace) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("error $error"),
+                                        ), 
+                                      );
+                                    });
+                                    AgoraData.isMute = true;
+                                  }
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
@@ -162,38 +162,38 @@ class _OnCallState extends State<OnCall> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  // if (AgoraData.isSpeaker) {
-                                  //   await AgoraData.agoraEngine.setDefaultAudioRouteToSpeakerphone(false).then((value) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text("speaker off"),
-                                  //       ), 
-                                  //     );
-                                  //   }).onError((error, stackTrace) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       SnackBar(
-                                  //         content: Text("error $error"),
-                                  //       ), 
-                                  //     );
-                                  //   });
-                                  //   AgoraData.isSpeaker = false;
-                                  // }
-                                  // else {
-                                  //   await AgoraData.agoraEngine.setDefaultAudioRouteToSpeakerphone(true).then((value) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text("speaker on"),
-                                  //       ), 
-                                  //     );
-                                  //   }).onError((error, stackTrace) {
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       SnackBar(
-                                  //         content: Text("error $error"),
-                                  //       ), 
-                                  //     );
-                                  //   });
-                                  //   AgoraData.isSpeaker = true;
-                                  // }
+                                  if (AgoraData.isSpeaker) {
+                                    await AgoraData.agoraEngine.setDefaultAudioRouteToSpeakerphone(false).then((value) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text("speaker off"),
+                                        ), 
+                                      );
+                                    }).onError((error, stackTrace) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("error $error"),
+                                        ), 
+                                      );
+                                    });
+                                    AgoraData.isSpeaker = false;
+                                  }
+                                  else {
+                                    await AgoraData.agoraEngine.setDefaultAudioRouteToSpeakerphone(true).then((value) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text("speaker on"),
+                                        ), 
+                                      );
+                                    }).onError((error, stackTrace) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("error $error"),
+                                        ), 
+                                      );
+                                    });
+                                    AgoraData.isSpeaker = true;
+                                  }
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
