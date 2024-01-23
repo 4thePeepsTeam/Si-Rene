@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/globalWidget/bottom_icon.dart';
-import 'package:sirene/officer/data/officer_data.dart';
+import 'package:sirene/officer/page/home/component/bottomNavigationBar/data/custom_bottom_navigation_bar_data.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({ super.key });

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/officer/page/home/component/callAlert/component/content/component/body/component/accept_widget.dart';
-import 'package:sirene/officer/page/home/component/callAlert/component/content/component/body/component/caller_widget.dart';
-import 'package:sirene/officer/page/home/component/callAlert/component/content/component/body/component/reject_widget.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertBody/component/accept_widget.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertBody/component/caller_widget.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertBody/component/reject_widget.dart';
 
 class AlertBody extends StatefulWidget {
   const AlertBody({ super.key });

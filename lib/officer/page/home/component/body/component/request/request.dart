@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/officer/page/home/component/request/component/requestDetails/component/address_widget.dart';
-import 'package:sirene/officer/page/home/component/request/component/requestDetails/component/contact_widget.dart';
-import 'package:sirene/officer/page/home/component/request/component/requestDetails/component/distance_duration_widget.dart';
-import 'package:sirene/officer/page/home/component/request/component/requestDetails/component/name_widget.dart';
+import 'package:sirene/officer/page/home/component/body/component/request/component/requestDetails/address_widget.dart';
+import 'package:sirene/officer/page/home/component/body/component/request/component/requestDetails/contact_widget.dart';
+import 'package:sirene/officer/page/home/component/body/component/request/component/requestDetails/distance_duration_widget.dart';
+import 'package:sirene/officer/page/home/component/body/component/request/component/requestDetails/name_widget.dart';
 
 class Request extends StatefulWidget {
   const Request({ super.key });

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sirene/globalWidget/bottom_icon.dart';
-import '../../data/officer_data.dart';
+import 'package:sirene/officer/data/officer_data.dart';
+import 'package:sirene/officer/page/home/component/bottomNavigationBar/custom_bottom_navigation_bar.dart';
+import 'package:sirene/officer/page/map/map_data.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
@@ -275,83 +276,7 @@ class _MapPageState extends State<MapPage> {
           ),
         ),
       
-        bottomNavigationBar: Container(
-          width: size.width,
-          height: size.height * 0.1,
-          decoration: const BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 1),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, -2),
-              color: Color.fromRGBO(0, 0, 0, 0.1),
-              blurRadius: 30,
-            ),
-          ],
-        ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        isHome.value = true;
-                        isNotification.value = false;
-                        isProfile.value = false;
-                      },
-                      child: BottomIcon(
-                        listenable: isHome,
-                        icon: Icons.home_filled,
-                        label: "Home",
-                      )
-                    ),
-                  ),
-                ),
-              ),
-
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      isHome.value = false;
-                      isNotification.value = true;
-                      isProfile.value = false;
-                    },
-                    child: BottomIcon(
-                      listenable: isNotification,
-                      icon: Icons.notifications,
-                      label: "Notification",
-                    )
-                  ),
-                ),
-              ),
-
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        isHome.value = false;
-                        isNotification.value = false;
-                        isProfile.value = true;
-                      },
-                      child: BottomIcon(
-                        listenable: isProfile,
-                        icon: Icons.person,
-                        label: "Profile",
-                      )
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        )
+        bottomNavigationBar: const CustomBottomNavigationBar()
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/officer/page/home/component/tab/data.dart';
-import 'package:sirene/officer/page/home/component/tab/tab_container_widget.dart';
+import 'package:sirene/officer/page/home/component/customTab/data/data.dart';
+import 'package:sirene/officer/page/home/component/customTab/component/tabContainerWidget/tab_container_widget.dart';
 
 class CustomTab extends StatefulWidget {
   const CustomTab({ super.key });

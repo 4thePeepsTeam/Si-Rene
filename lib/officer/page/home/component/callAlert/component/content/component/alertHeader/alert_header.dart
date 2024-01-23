@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/officer/page/home/component/callAlert/component/content/component/header/component/alert_widget.dart';
-import 'package:sirene/officer/page/home/component/callAlert/component/content/component/header/component/logo_widget.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertHeader/component/alert_widget.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertHeader/component/logo_widget.dart';
 
 class AlertHeader extends StatelessWidget {
 const AlertHeader({ super.key });

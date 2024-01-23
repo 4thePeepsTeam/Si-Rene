@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/officer/page/home/component/callAlert/component/content/component/body/alert_body.dart';
-import 'package:sirene/officer/page/home/component/callAlert/component/content/component/header/alert_header.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertBody/alert_body.dart';
+import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertHeader/alert_header.dart';
 
 class Content extends StatefulWidget {
   const Content({ Key? key }) : super(key: key);
