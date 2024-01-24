@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/auth/page/component/bottom_text.dart';
-import 'package:sirene/auth/page/component/header_logo.dart';
+import 'package:sirene/auth/page/component/bottomText/bottom_text.dart';
+import 'package:sirene/auth/page/component/headerLogo/header_logo.dart';
 import 'package:sirene/callPage/home_call.dart';
-import 'package:sirene/auth/page/component/login_button.dart';
+import 'package:sirene/auth/page/component/loginButton/login_button.dart';
 import 'package:sirene/officer/page/home/home_page.dart';
 
 class AuthPage extends StatefulWidget {

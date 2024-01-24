@@ -3,7 +3,7 @@ import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/officer/data/officer_data.dart';
-import 'package:sirene/officer/page/call/on_call.dart';
+import 'package:sirene/officer/page/call/call_page.dart';
 
 class AcceptWidget extends StatefulWidget {
   const AcceptWidget({ super.key });
@@ -29,7 +29,7 @@ class _AcceptWidgetState extends State<AcceptWidget> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return const OnCall();
+                    return const CallPage();
                   },
                 ),
               );

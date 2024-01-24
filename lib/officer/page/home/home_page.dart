@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/officer/page/home/component/body/body.dart';
-import 'package:sirene/officer/page/home/component/bottomNavigationBar/custom_bottom_navigation_bar.dart';
+import 'package:sirene/officer/page/home/component/customBottomNavigationBar/custom_bottom_navigation_bar.dart';
 import 'package:sirene/officer/page/home/component/callAlert/call_alert.dart';
 import 'package:sirene/officer/page/home/component/header/header.dart';
 import 'package:sirene/officer/page/home/component/customTab/custom_tab.dart';
