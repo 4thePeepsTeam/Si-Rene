@@ -3,10 +3,10 @@ import 'package:sirene/officer/page/home/component/callAlert/component/content/c
 import 'package:sirene/officer/page/home/component/callAlert/component/content/component/alertHeader/alert_header.dart';
 
 class Content extends StatefulWidget {
-  const Content({ Key? key }) : super(key: key);
+  const Content({ super.key });
 
   @override
-  _ContentState createState() => _ContentState();
+  State <Content> createState() => _ContentState();
 }
 
 class _ContentState extends State<Content> {

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/globalData/agora_data.dart';
-import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/officer/page/call/component/callAction/component/hangUpAction/hang_up_action.dart';
 import 'package:sirene/officer/page/call/component/callAction/component/muteAction/mute_action.dart';
 import 'package:sirene/officer/page/call/component/callAction/component/speakerAction/speaker_action.dart';
