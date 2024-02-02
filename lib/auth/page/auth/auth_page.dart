@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/auth/component/bottomText/bottom_text.dart';
 import 'package:sirene/auth/page/auth/component/headerLogo/header_logo.dart';
 import 'package:sirene/auth/page/auth/component/loginButton/login_button.dart';
-import 'package:sirene/auth/page/userName/user_name_page.dart';
-import 'package:sirene/callPage/home_call.dart';
+import 'package:sirene/callPage/call.dart';
 import 'package:sirene/officer/page/home/home_page.dart';
 
 class AuthPage extends StatefulWidget {
@@ -46,7 +45,7 @@ class _AuthPageState extends State<AuthPage> {
                         buttonColor: Color.fromRGBO(255, 87, 20, 1),
                         buttonText: "Continue with Google as User",
                         textColor: Colors.white,
-                        widget: UserNamePage(),
+                        widget: Call(),
                       ),
               
                       SizedBox(height: 10),

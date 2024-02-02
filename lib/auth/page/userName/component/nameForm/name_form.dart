@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/auth/page/userName/data/user_name_data.dart';
 
 class NameForm extends StatefulWidget {
   const NameForm({ super.key });
@@ -8,21 +9,15 @@ class NameForm extends StatefulWidget {
 }
 
 class _NameFormState extends State<NameForm> {
-
-  String name = "";
-
   @override
   Widget build(BuildContext context) {
-    
-    Size size = MediaQuery.of(context).size;
-
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Center(
         child: TextField(
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color.fromRGBO(0, 0, 0, 0.03),
+            fillColor: const Color.fromRGBO(0, 0, 0, 0.03),
             contentPadding: const EdgeInsets.all(0),
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(
@@ -48,6 +43,12 @@ class _NameFormState extends State<NameForm> {
           onChanged: (value) {
             name = value;
             debugPrint(name);
+            if (value.isNotEmpty) {
+              isFilled.value = true;
+            }
+            else {
+              isFilled.value = false;
+            }
           },
         )
       ),

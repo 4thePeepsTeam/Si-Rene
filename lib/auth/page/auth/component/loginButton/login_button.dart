@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/auth/page/userName/user_name_page.dart';
 import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
@@ -42,13 +43,28 @@ final Widget widget;
           await UserData.uploadDataIfFirstTime(); 
           await FirestoreData.removeCallData();
           AgoraData.leave();
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return widget;
-              },
-            ),
-          );
+          if (UserData.firstTime) {
+            await Future.delayed(Duration.zero, () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const UserNamePage();
+                  },
+                ),
+              );
+            });
+          }
+          else {
+            await Future.delayed(Duration.zero, () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return widget;
+                  },
+                ),
+              );
+            });
+          }
         }   
       },
       child: Center(

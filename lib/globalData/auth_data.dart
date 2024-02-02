@@ -11,16 +11,23 @@ mixin UserData {
     return userCredential != null;
   }
 
+  static bool firstTime = true;
+
   static Future <void> uploadDataIfFirstTime() async {
     await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).get().then((value) async {
       if (!value.exists) {
+        debugPrint("value not existed yet");
+        firstTime = true;
         await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
-          "name": UserData.userCredential.user.displayName,
+          "name": "",
           "isOnCall": false,
           "caller": "",
           "remoteUid": "",
           "calling": "",
-        }); 
+        });
+      }
+      else {
+        firstTime = false;
       }
     }); 
   }
