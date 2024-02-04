@@ -4,7 +4,14 @@ import 'package:sirene/auth/page/userName/component/header/header.dart';
 import 'package:sirene/auth/page/userName/component/nameForm/name_form.dart';
 
 class UserNamePage extends StatefulWidget {
-  const UserNamePage({ super.key });
+  const UserNamePage({
+    super.key,
+    required this.description,
+    required this.nextPage,
+  });
+
+  final String description;
+  final Widget nextPage;
 
   @override
   State <UserNamePage> createState() => _UserNamePageState();
@@ -13,19 +20,23 @@ class UserNamePage extends StatefulWidget {
 class _UserNamePageState extends State<UserNamePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Header(),
+              Header(
+                description: widget.description,
+              ),
 
-              NameForm(),
+              const NameForm(),
 
-              Continue(),
+              Continue(
+                nextPage: widget.nextPage,
+              ),
             ],
           ),
         ),

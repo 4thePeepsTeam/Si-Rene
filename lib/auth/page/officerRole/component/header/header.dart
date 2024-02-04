@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Header extends StatefulWidget {
-  const Header({
-     super.key,
-     required this.description,
-  });
-
-  final String description;
+class Header extends StatelessWidget {
+const Header({ super.key });
 
   @override
-  State <Header> createState() => _HeaderState();
-}
-
-class _HeaderState extends State<Header> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context){
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
-          "Fill your Name",
+        Text(
+          "Pick Your Role",
           style: TextStyle(
             fontSize: 24,
             color: Color.fromRGBO(13, 1, 6, 1),
@@ -27,11 +17,11 @@ class _HeaderState extends State<Header> {
           ),
         ),
     
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
     
         Text(
-          widget.description,
-          style: const TextStyle(
+          "Pick a role according to your role on field",
+          style: TextStyle(
             fontSize: 14,
             color: Color.fromRGBO(13, 1, 6, 0.5),
           ),

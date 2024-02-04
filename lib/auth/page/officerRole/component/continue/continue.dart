@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sirene/auth/page/userName/data/user_name_data.dart';
+import 'package:sirene/auth/page/officerRole/data/officer_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 
 class Continue extends StatefulWidget {
@@ -22,7 +22,7 @@ class _ContinueState extends State<Continue> {
     Size size = MediaQuery.of(context).size;
 
     return ValueListenableBuilder(
-      valueListenable: isFilled,
+      valueListenable: isChoosed,
       builder: (context, value, child) {
         if (value) {
           return ElevatedButton(
@@ -38,8 +38,21 @@ class _ContinueState extends State<Continue> {
               ),
             ),
             onPressed: () async {
+
+              if (isAmbulanceOperator.value) {
+                role = "Ambulance Operator";
+              }
+
+              if (isFireFighter.value) {
+                role = "Firefighter";
+              }
+
+              if (isPolice.value) {
+                role = "Police";
+              }
+
               await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
-                "name": name,
+                "role": role,
               }, SetOptions(merge: true));
 
               WidgetsBinding.instance.addPostFrameCallback((_) {

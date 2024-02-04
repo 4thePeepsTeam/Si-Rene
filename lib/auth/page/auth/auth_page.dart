@@ -45,6 +45,7 @@ class _AuthPageState extends State<AuthPage> {
                         buttonColor: Color.fromRGBO(255, 87, 20, 1),
                         buttonText: "Continue with Google as User",
                         textColor: Colors.white,
+                        role: "user",
                         widget: Call(),
                       ),
               
@@ -55,6 +56,7 @@ class _AuthPageState extends State<AuthPage> {
                         buttonColor: Colors.white,
                         buttonText: "Continue with Google as Officer",
                         textColor: Color.fromRGBO(255, 87, 20, 1),
+                        role: "officer",
                         widget: HomePageOfficer(),
                       ),
 

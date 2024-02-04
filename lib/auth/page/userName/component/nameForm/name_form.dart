@@ -43,7 +43,7 @@ class _NameFormState extends State<NameForm> {
           onChanged: (value) {
             name = value;
             debugPrint(name);
-            if (value.isNotEmpty) {
+            if (value.isNotEmpty && value != "") {
               isFilled.value = true;
             }
             else {

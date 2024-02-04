@@ -109,7 +109,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                             children: [
                               Expanded(
                                 child: Align(
-                                  alignment: Alignment.bottomLeft,
+                                  alignment: Alignment.centerLeft,
                                   child: Text(
                                     "Your Location",
                                     style: TextStyle(
@@ -123,7 +123,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
 
                               Expanded(
                                 child: Align(
-                                  alignment: Alignment.bottomLeft,
+                                  alignment: Alignment.centerLeft,
                                   child: SingleChildScrollView(
                                     physics: BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,

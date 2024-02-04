@@ -70,8 +70,10 @@ class _OnCallState extends State<OnCall> {
                           await FirestoreData.removeCallData();
                           AgoraData.leave();
                           hasOrder.value = true;
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          });
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),

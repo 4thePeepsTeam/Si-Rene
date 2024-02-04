@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/auth/page/officerRole/officer_role_page.dart';
 import 'package:sirene/auth/page/userName/user_name_page.dart';
+import 'package:sirene/callPage/call.dart';
 import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sirene/officer/page/home/home_page.dart';
 
 class LoginButton extends StatelessWidget {
 const LoginButton({ 
@@ -13,6 +16,7 @@ const LoginButton({
   required this.buttonText,
   required this.textColor, 
   required this.widget,
+  required this.role,
 });
 
 final Color buttonColor;
@@ -20,6 +24,7 @@ final Color borderColor;
 final String buttonText;
 final Color textColor;
 final Widget widget;
+final String role;
 
   @override
   Widget build(BuildContext context){
@@ -43,12 +48,29 @@ final Widget widget;
           await UserData.uploadDataIfFirstTime(); 
           await FirestoreData.removeCallData();
           AgoraData.leave();
-          if (UserData.firstTime) {
+          if (UserData.firstTime && role == "user") {
             await Future.delayed(Duration.zero, () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return const UserNamePage();
+                    return const UserNamePage(
+                      description: "Enter your full name as identification by the\nofficer",
+                      nextPage: Call(),
+                    );
+                  },
+                ),
+              );
+            });
+          }
+          else if (UserData.firstTime && role == "officer") {
+            await Future.delayed(Duration.zero, () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const UserNamePage(
+                      description: "Enter your full name as identification",
+                      nextPage: OfficerRolePage(),
+                    );
                   },
                 ),
               );
