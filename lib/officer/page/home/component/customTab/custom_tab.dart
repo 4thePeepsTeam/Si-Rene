@@ -22,10 +22,14 @@ class _CustomTabState extends State<CustomTab> {
             text: "Request",
           ),
 
+          const SizedBox(width: 10),
+
           TabContainerWidget(
             listen: isInProgress,
             text: "In Progress",
           ),
+
+          const SizedBox(width: 10),
 
           TabContainerWidget(
             listen: isDone,

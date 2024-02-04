@@ -16,15 +16,18 @@ class Continue extends StatefulWidget {
 }
 
 class _ContinueState extends State<Continue> {
+
+  String role = "";
+
   @override
   Widget build(BuildContext context) {
     
     Size size = MediaQuery.of(context).size;
 
-    return ValueListenableBuilder(
-      valueListenable: isChoosed,
-      builder: (context, value, child) {
-        if (value) {
+    return ListenableBuilder(
+      listenable: officerRole,
+      builder: (context, child) {
+        if (officerRole.isAmbulanceOperator.value || officerRole.isFirefighter.value || officerRole.isPolice.value) {
           return ElevatedButton(
             style: ButtonStyle(
               padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
@@ -39,15 +42,15 @@ class _ContinueState extends State<Continue> {
             ),
             onPressed: () async {
 
-              if (isAmbulanceOperator.value) {
+              if (officerRole.isAmbulanceOperator.value) {
                 role = "Ambulance Operator";
               }
 
-              if (isFireFighter.value) {
+              if (officerRole.isFirefighter.value) {
                 role = "Firefighter";
               }
 
-              if (isPolice.value) {
+              if (officerRole.isPolice.value) {
                 role = "Police";
               }
 

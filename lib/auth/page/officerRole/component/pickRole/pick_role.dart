@@ -21,19 +21,9 @@ class _PickRoleState extends State<PickRole> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {
-              isAmbulanceOperator.value = !(isAmbulanceOperator.value);
-              isFireFighter.value = false;
-              isPolice.value = false;
-              if (!isChoosed.value) {
-                isChoosed.value = true;
-              }
-              else {
-                isChoosed.value = false;
-              }
-            },
+            onTap: officerRole.ambulance,
             child: ValueListenableBuilder(
-              valueListenable: isAmbulanceOperator,
+              valueListenable: officerRole.isAmbulanceOperator,
               builder: (context, value, child) {
                 return AnimatedContainer(
                   width: size.width,
@@ -65,19 +55,9 @@ class _PickRoleState extends State<PickRole> {
           const SizedBox(height: 10),
 
           GestureDetector(
-            onTap: () {
-              isAmbulanceOperator.value = false;
-              isFireFighter.value = !(isFireFighter.value);
-              isPolice.value = false;
-              if (!isChoosed.value) {
-                isChoosed.value = true;
-              }
-              else {
-                isChoosed.value = false;
-              }
-            },
+            onTap: officerRole.firefighter,
             child: ValueListenableBuilder(
-              valueListenable: isFireFighter,
+              valueListenable: officerRole.isFirefighter,
               builder: (context, value, child) {
                 return AnimatedContainer(
                   width: size.width,
@@ -109,19 +89,9 @@ class _PickRoleState extends State<PickRole> {
           const SizedBox(height: 10),
 
           GestureDetector(
-            onTap: () {
-              isAmbulanceOperator.value = false;
-              isFireFighter.value = false;
-              isPolice.value = !(isPolice.value);
-              if (!isChoosed.value) {
-                isChoosed.value = true;
-              }
-              else {
-                isChoosed.value = false;
-              }
-            },
+            onTap: officerRole.police,
             child: ValueListenableBuilder(
-              valueListenable: isPolice,
+              valueListenable: officerRole.isPolice,
               builder: (context, value, child) {
                 return AnimatedContainer(
                   width: size.width,
