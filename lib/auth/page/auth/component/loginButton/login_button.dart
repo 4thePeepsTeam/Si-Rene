@@ -6,7 +6,6 @@ import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sirene/officer/page/home/home_page.dart';
 
 class LoginButton extends StatelessWidget {
 const LoginButton({ 
@@ -48,6 +47,7 @@ final String role;
           await UserData.uploadDataIfFirstTime(); 
           await FirestoreData.removeCallData();
           AgoraData.leave();
+          UserData.userRole = role;
           if (UserData.firstTime && role == "user") {
             await Future.delayed(Duration.zero, () {
               Navigator.of(context).push(

@@ -33,21 +33,31 @@ mixin FirestoreData {
 
   static Future <void> removeCallData () async {
     try {
-      if (AgoraData.callingIndex != -1) {
-        await FirebaseFirestore.instance.collection("user").doc(otherData.entries.elementAt(AgoraData.callingIndex).key).set({
-          "caller": "",
-          "isOnCall": false,
-          "remoteUid": "",
-          "calling": "",
-        }, SetOptions(merge: true));
-      } 
-      else {
-        await FirebaseFirestore.instance.collection("user").doc(yourData[UserData.userCredential.user.uid]["caller"]).set({
-          "caller": "",
-          "isOnCall": false,
-          "remoteUid": "",
-          "calling": "",
-        }, SetOptions(merge: true));
+      if (UserData.userRole == "user") {
+        if (AgoraData.callingIndex != -1) {
+          await FirebaseFirestore.instance.collection("user").doc(otherData.entries.elementAt(AgoraData.callingIndex).key).get().then((value) async {
+            if (value.exists) {
+              await FirebaseFirestore.instance.collection("user").doc(otherData.entries.elementAt(AgoraData.callingIndex).key).set({
+                "caller": "",
+                "isOnCall": false,
+                "remoteUid": "",
+                "calling": "",
+              }, SetOptions(merge: true));
+            } 
+          });
+        } 
+        else {
+          await FirebaseFirestore.instance.collection("user").doc(yourData[UserData.userCredential.user.uid]["caller"]).get().then((value) async {
+            if (value.exists) {
+              await FirebaseFirestore.instance.collection("user").doc(yourData[UserData.userCredential.user.uid]["caller"]).set({
+                "caller": "",
+                "isOnCall": false,
+                "remoteUid": "",
+                "calling": "",
+              }, SetOptions(merge: true));
+            }
+          });
+        }
       }
     } 
     catch (e) {

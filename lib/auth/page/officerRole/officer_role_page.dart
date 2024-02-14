@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/officerRole/component/continue/continue.dart';
 import 'package:sirene/auth/page/officerRole/component/header/header.dart';
 import 'package:sirene/auth/page/officerRole/component/pickRole/pick_role.dart';
-import 'package:sirene/officer/page/home/home_page.dart';
 
 class OfficerRolePage extends StatefulWidget {
   const OfficerRolePage({ super.key });
@@ -26,9 +25,7 @@ class _OfficerRolePageState extends State<OfficerRolePage> {
 
               PickRole(),
 
-              Continue(
-                nextPage: HomePageOfficer(),
-              )              
+              Continue()              
             ],
           ),
         ),

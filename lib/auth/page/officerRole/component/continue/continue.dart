@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/officerRole/data/officer_data.dart';
+import 'package:sirene/auth/page/userName/data/user_name_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/officer/page/home/home_page.dart';
 
 class Continue extends StatefulWidget {
-  const Continue({
-    super.key,
-    required this.nextPage,
-  });
-
-  final Widget nextPage;
+  const Continue({super.key});
 
   @override
   State <Continue> createState() => _ContinueState();
@@ -54,15 +51,29 @@ class _ContinueState extends State<Continue> {
                 role = "Police";
               }
 
-              await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
-                "role": role,
-              }, SetOptions(merge: true));
+              await FirebaseFirestore.instance.collection("officer").doc(UserData.userCredential.user.uid).get().then((value) async {
+                if (!value.exists) {
+                  debugPrint("value not existed yet");
+                  UserData.firstTime = true;
+                  await FirebaseFirestore.instance.collection("officer").doc(UserData.userCredential.user.uid).set({
+                    "name": name,
+                    "isOnCall": false,
+                    "caller": "",
+                    "remoteUid": "",
+                    "calling": "",
+                    "role": role,
+                  });
+                }
+                else {
+                  UserData.firstTime = false;
+                }
+              });
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) {
-                      return widget.nextPage;
+                      return const HomePageOfficer();
                     },
                   ),
                 );

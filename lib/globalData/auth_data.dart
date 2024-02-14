@@ -12,24 +12,27 @@ mixin UserData {
   }
 
   static bool firstTime = true;
+  static String userRole = "";
 
   static Future <void> uploadDataIfFirstTime() async {
-    await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).get().then((value) async {
-      if (!value.exists) {
-        debugPrint("value not existed yet");
-        firstTime = true;
-        await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
-          "name": "",
-          "isOnCall": false,
-          "caller": "",
-          "remoteUid": "",
-          "calling": "",
-        });
-      }
-      else {
-        firstTime = false;
-      }
-    }); 
+    if (userRole == "user") {
+      await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).get().then((value) async {
+        if (!value.exists) {
+          debugPrint("value not existed yet");
+          firstTime = true;
+          await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
+            "name": "",
+            "isOnCall": false,
+            "caller": "",
+            "remoteUid": "",
+            "calling": "",
+          });
+        }
+        else {
+          firstTime = false;
+        }
+      }); 
+    }
   }
 
   static Future <dynamic> signInWithGoogle() async {
