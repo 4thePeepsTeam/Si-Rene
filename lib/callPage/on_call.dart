@@ -20,9 +20,9 @@ class _OnCallState extends State<OnCall> {
       body: StreamBuilder(
         stream: FirestoreData.userDataFireStore,
         builder: (context, snapshot) {
-          debugPrint("is has data ${snapshot.hasData.toString()}");
+          // debugPrint("is has data ${snapshot.hasData.toString()}");
           if (snapshot.hasData) {
-            debugPrint("gotcha ${snapshot.data!.data()!["isOnCall"]}");
+            // debugPrint("gotcha ${snapshot.data!.data()!["isOnCall"]}");
             if (snapshot.data!.data()!["isOnCall"]) {
               return SizedBox(
                 width: size.width,
