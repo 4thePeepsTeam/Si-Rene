@@ -10,11 +10,9 @@ mixin AgoraData {
   static late RtcEngine agoraEngine; 
   static String channelName = "";
   static int uid = 1;
-  static bool isJoin = false;
+  // static bool isJoin = false;
   static bool isMute = false;
   static bool isSpeaker = false;
-
-  static int callingIndex = -1;
 
   static void join() async {
     // Set channel options including the client role and channel profile
@@ -22,6 +20,10 @@ mixin AgoraData {
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
         channelProfile: ChannelProfileType.channelProfileCommunication,
     );
+
+    if (UserData.userRole != "user") {
+      uid = 2;
+    }
 
     await agoraEngine.joinChannel(
         token: "",
@@ -37,7 +39,7 @@ mixin AgoraData {
   static void leave() async {
     try {
       await agoraEngine.leaveChannel();
-      isJoin = false;
+      // isJoin = false;
     }
     catch (x) {
       debugPrint("engine is not initialized yet");
@@ -70,23 +72,47 @@ mixin AgoraData {
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) async {
           showMessage("Local user uid:${connection.localUid} joined the channel");
           debugPrint("\n\n\n\n\njoin success\n\n\n\n\n");
-          await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
-            "isOnCall": true,
-          }, SetOptions(merge: true));
+
+          if (UserData.userRole == "user") {
+            await FirestoreData.user.doc(UserData.userCredential.user.uid).set({
+              "isOnCall": true,
+            }, SetOptions(merge: true));
+          }
+          else {
+            await FirestoreData.officer.doc(UserData.userCredential.user.uid).set({
+              "isOnCall": true,
+            }, SetOptions(merge: true));
+          }
         },
         onUserJoined: (RtcConnection connection, int rUid, int elapsed) async {
           showMessage("Remote user uid:$rUid joined the channel");
           debugPrint("\n\n\n\n\nuser joined\n\n\n\n\n");
-          await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
-            "remoteUid": rUid,
-          }, SetOptions(merge: true));
+
+          if (UserData.userRole == "user") {
+            await FirestoreData.user.doc(UserData.userCredential.user.uid).set({
+              "remoteUid": rUid,
+            }, SetOptions(merge: true));
+          }
+          else {
+            await FirestoreData.officer.doc(UserData.userCredential.user.uid).set({
+              "remoteUid": rUid,
+            }, SetOptions(merge: true));
+          }
         },
         onUserOffline: (RtcConnection connection, int? rUid, UserOfflineReasonType reason) async {
           showMessage("Remote user uid:$rUid left the channel");
           debugPrint("\n\n\n\n\nuser offline\n\n\n\n\n");
-          await FirebaseFirestore.instance.collection("user").doc(UserData.userCredential.user.uid).set({
-            "remoteUid": "",
-          }, SetOptions(merge: true));
+
+          if (UserData.userRole == "user") {
+            await FirestoreData.user.doc(UserData.userCredential.user.uid).set({
+              "remoteUid": "",
+            }, SetOptions(merge: true));
+          }
+          else {
+            await FirestoreData.officer.doc(UserData.userCredential.user.uid).set({
+              "remoteUid": "",
+            }, SetOptions(merge: true));
+          }
           await FirestoreData.removeCallData();
           leave();
         },

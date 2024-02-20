@@ -21,12 +21,22 @@ mixin UserData {
           debugPrint("value not existed yet");
           firstTime = true;
           await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
-            "name": "",
+            "name": "test",
             "isOnCall": false,
-            "caller": "",
             "remoteUid": "",
             "calling": "",
           });
+        }
+        else {
+          firstTime = false;
+        }
+      }); 
+    }
+    else {
+      await FirebaseFirestore.instance.collection("officer").doc(userCredential.user.uid).get().then((value) async {
+        if (!value.exists) {
+          debugPrint("value not existed yet");
+          firstTime = true;
         }
         else {
           firstTime = false;

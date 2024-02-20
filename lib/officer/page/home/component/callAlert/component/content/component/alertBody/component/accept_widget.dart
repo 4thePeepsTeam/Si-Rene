@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/globalData/agora_data.dart';
-import 'package:sirene/globalData/auth_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/officer/data/officer_data.dart';
 import 'package:sirene/officer/page/call/call_page.dart';
@@ -21,7 +20,7 @@ class _AcceptWidgetState extends State<AcceptWidget> {
         GestureDetector(
           onTap: () async {
             await AgoraData.setupVoiceSDKEngine();
-            AgoraData.channelName = FirestoreData.yourData[UserData.userCredential.user.uid]["caller"];
+            AgoraData.channelName = OfficerFireStoreData.yourData!["calling"];
             debugPrint("channel name: ${AgoraData.channelName}");
             AgoraData.join();
             hasOrder.value = true;

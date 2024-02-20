@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/globalData/firestore_data.dart';
 
 class CallerWidget extends StatefulWidget {
   const CallerWidget({ super.key });
@@ -10,10 +11,10 @@ class CallerWidget extends StatefulWidget {
 class _CallerWidgetState extends State<CallerWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Text(
+        const Text(
           "Incoming Call",
           style: TextStyle(
             color: Color.fromRGBO(13, 1, 6, 1),
@@ -22,8 +23,8 @@ class _CallerWidgetState extends State<CallerWidget> {
         ),
 
         Text(
-          "Ahmad Bagas Aditya",
-          style: TextStyle(
+          OfficerFireStoreData.callerName,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),

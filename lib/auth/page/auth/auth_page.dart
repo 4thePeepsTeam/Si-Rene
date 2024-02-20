@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sirene/auth/page/auth/component/bottomText/bottom_text.dart';
 import 'package:sirene/auth/page/auth/component/headerLogo/header_logo.dart';
 import 'package:sirene/auth/page/auth/component/loginButton/login_button.dart';
 import 'package:sirene/callPage/call.dart';
 import 'package:sirene/officer/page/home/home_page.dart';
+import 'package:sirene/globalData/theme_data.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({ super.key });
@@ -13,22 +15,23 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+
  @override
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+      backgroundColor: whiteColor,
       // ignore: sized_box_for_whitespace
       body: SafeArea(
         child: SizedBox(
           width: size.width,
           height: size.height,
-          child: const Column(
+          child: Column(
             children: [
         
-              Expanded(
+              const Expanded(
                 flex: 1,
                 child: HeaderLogo()
               ),
@@ -36,33 +39,33 @@ class _AuthPageState extends State<AuthPage> {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       LoginButton(
                         borderColor: Colors.transparent,
-                        buttonColor: Color.fromRGBO(255, 87, 20, 1),
+                        buttonColor: orangeColor,
                         buttonText: "Continue with Google as User",
-                        textColor: Colors.white,
+                        textColor: whiteColor,
                         role: "user",
-                        widget: Call(),
+                        widget: const Call(),
                       ),
               
-                      SizedBox(height: 10),
-
+                      const SizedBox(height: 10),
+        
                       LoginButton(
-                        borderColor: Color.fromRGBO(255, 87, 20, 1),
-                        buttonColor: Colors.white,
+                        borderColor: orangeColor,
+                        buttonColor: whiteColor,
                         buttonText: "Continue with Google as Officer",
-                        textColor: Color.fromRGBO(255, 87, 20, 1),
+                        textColor: orangeColor,
                         role: "officer",
-                        widget: HomePageOfficer(),
+                        widget: const HomePageOfficer(),
                       ),
-
-                      SizedBox(height: 20),
-
-                      BottomText(),
+        
+                      const SizedBox(height: 20),
+        
+                      const BottomText(),
                     ],
                   ),
                 ),
