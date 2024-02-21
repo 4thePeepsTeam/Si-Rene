@@ -12,26 +12,32 @@ class CallAlert extends StatefulWidget {
 
 class _CallAlertState extends State<CallAlert> {
 
-  bool isGetCall() {
-    return FirestoreData.yourData.entries.elementAt(0).value["isOnCall"];
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirestoreData.dataFireStore,
+      stream: OfficerFireStoreData.dataFireStore,
       builder: (context, snapshot) {
 
         if (snapshot.hasData) {
-          FirestoreData.getFireData(snapshot);
+          OfficerFireStoreData.getFireData(snapshot);
+          if (OfficerFireStoreData.isGetCall()) {
+            return StreamBuilder(
+              stream: OfficerFireStoreData.callerData,
+              builder: (context, snapshot) {
+                debugPrint("getting call");
+                if (snapshot.hasData) {
+                  OfficerFireStoreData.callerName = snapshot.data!.data()!["name"];
+                  return const Stack(
+                    children: [
+                      Background(),
+                  
+                      Content(),
+                    ],
+                  );
+                }
 
-          if (isGetCall()) {
-            return const Stack(
-              children: [
-                Background(),
-
-                Content(),
-              ],
+                return const SizedBox.shrink();
+              },
             );
           }
           

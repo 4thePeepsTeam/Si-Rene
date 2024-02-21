@@ -22,9 +22,9 @@ class _OfficerRolePageState extends State<OfficerRolePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Header(),
-
+        
               PickRole(),
-
+        
               Continue()              
             ],
           ),

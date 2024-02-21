@@ -1,79 +1,93 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'agora_data.dart';
 import 'auth_data.dart';
 
 mixin FirestoreData {
-  static Stream <QuerySnapshot<Object?>> dataFireStore = FirebaseFirestore.instance.collection('user').snapshots();
 
-  static Map <String, dynamic> otherData = {};
+  static CollectionReference<Map<String, dynamic>> user = FirebaseFirestore.instance.collection("user");
+  static CollectionReference<Map<String, dynamic>> officer = FirebaseFirestore.instance.collection("officer");
+
+  static Stream <DocumentSnapshot<Map<String, dynamic>>> userDataFireStore = FirebaseFirestore.instance.collection('user').doc(UserData.userCredential.user!.uid).snapshots();
+
   static Map <String, dynamic> yourData = {};
-  static Map <String, dynamic> allData = {};
 
   static void getFireData(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) async {
 
     var anything = snapshot.data!.docs.map((e) => {e.id: e.data() as Map <String, dynamic>}).toList();
 
     for (var element in anything) {
-      allData.addAll(element);
+      yourData.addAll(element);
     }
 
-    otherData.addAll(allData);
-    yourData.addAll(allData);
-
     yourData.removeWhere((key, value) => key != UserData.userCredential.user!.uid); // isinya diri sendiri
-    otherData.removeWhere((key, value) => key == UserData.userCredential.user!.uid); // selain  diri sendiiri
 
     debugPrint("anything: $anything");
-    debugPrint("allData: $allData");
     debugPrint("yourData: $yourData");
-    debugPrint("otherData: $otherData");
   }
 
   static Future <void> removeCallData () async {
     try {
       if (UserData.userRole == "user") {
-        if (AgoraData.callingIndex != -1) {
-          await FirebaseFirestore.instance.collection("user").doc(otherData.entries.elementAt(AgoraData.callingIndex).key).get().then((value) async {
-            if (value.exists) {
-              await FirebaseFirestore.instance.collection("user").doc(otherData.entries.elementAt(AgoraData.callingIndex).key).set({
-                "caller": "",
-                "isOnCall": false,
-                "remoteUid": "",
-                "calling": "",
-              }, SetOptions(merge: true));
-            } 
-          });
-        } 
-        else {
-          await FirebaseFirestore.instance.collection("user").doc(yourData[UserData.userCredential.user.uid]["caller"]).get().then((value) async {
-            if (value.exists) {
-              await FirebaseFirestore.instance.collection("user").doc(yourData[UserData.userCredential.user.uid]["caller"]).set({
-                "caller": "",
-                "isOnCall": false,
-                "remoteUid": "",
-                "calling": "",
-              }, SetOptions(merge: true));
-            }
-          });
-        }
+        await FirestoreData.officer.doc(yourData[UserData.userCredential.user.uid]["calling"]).set({
+          "isOnCall": false,
+          "remoteUid": "",
+          "calling": "",
+        }, SetOptions(merge: true));
+
+        await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
+          "calling": "",
+          "isOnCall": false,
+          "remoteUid": "",
+        }, SetOptions(merge: true));
+      }
+      else {
+        await FirestoreData.user.doc(yourData[UserData.userCredential.user.uid]["calling"]).set({
+          "isOnCall": false,
+          "remoteUid": "",
+          "calling": "",
+        }, SetOptions(merge: true));
+
+        await FirestoreData.officer.doc(UserData.userCredential.user!.uid).set({
+          "calling": "",
+          "isOnCall": false,
+          "remoteUid": "",
+        }, SetOptions(merge: true));
       }
     } 
     catch (e) {
       debugPrint("data is not initialized yet");
     }
+  }
+}
 
-    try {
-      await FirebaseFirestore.instance.collection("user").doc(yourData.entries.elementAt(0).key).set({
-        "caller": "",
-        "isOnCall": false,
-        "remoteUid": "",
-        "calling": "",
-      }, SetOptions(merge: true));
+mixin OfficerFireStoreData {
+  static Stream <DocumentSnapshot<Map<String, dynamic>>> dataFireStore = FirebaseFirestore.instance.collection('officer').doc(UserData.userCredential.user!.uid).snapshots();
+  static Stream <QuerySnapshot<Object?>> allDataFireStore = FirebaseFirestore.instance.collection('officer').snapshots();
+  static Stream <DocumentSnapshot<Map<String, dynamic>>> callerData = FirestoreData.user.doc(yourData!["calling"]).snapshots();
+
+  static late Map <String, dynamic>? yourData;
+  static late String callerName;
+  static Map <String, dynamic>? allData = {};
+
+  static void getFireData(AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) async {
+    debugPrint("Getting officer data");
+    yourData = snapshot.data!.data();
+    debugPrint(yourData.toString());
+  }
+
+  static void getAllData(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) async {
+    debugPrint("Getting all officer data");
+    var anything = snapshot.data!.docs.map((e) => {e.id: e.data() as Map <String, dynamic>}).toList();
+
+    for (var element in anything) {
+      allData!.addAll(element);
+      debugPrint("Data added");
     }
-    catch (e) {
-      debugPrint("data is not initialized yet");
-    }
+
+    debugPrint("All data: $allData");
+  }
+
+  static bool isGetCall() {
+    return yourData!["calling"] != "";
   }
 }

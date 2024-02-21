@@ -20,9 +20,7 @@ class _HangUpActionState extends State<HangUpAction> {
             debugPrint("channel name: ${AgoraData.channelName}");
             await FirestoreData.removeCallData();
             AgoraData.leave();
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pop();
-            });
+            Navigator.of(context).pop();
           },
           child: Container(
             padding: const EdgeInsets.all(8),

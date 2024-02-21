@@ -19,10 +19,26 @@ class _CallPageState extends State<CallPage> {
     Size size = MediaQuery.of(context).size;
 
     return StreamBuilder(
-      stream: FirestoreData.dataFireStore,
+      stream: OfficerFireStoreData.dataFireStore,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          FirestoreData.getFireData(snapshot);
+          OfficerFireStoreData.getFireData(snapshot);
+          return Scaffold(
+            body: SizedBox(
+              width: size.width,
+              height: size.height,
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Caller(),
+          
+                  Time(),
+          
+                  CallAction(),
+                ],
+              ),
+            ),
+          );
           if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
             return Scaffold(
               body: SizedBox(

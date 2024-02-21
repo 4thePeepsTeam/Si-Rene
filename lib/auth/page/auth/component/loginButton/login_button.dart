@@ -6,6 +6,7 @@ import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sirene/globalData/theme_data.dart';  
 
 class LoginButton extends StatelessWidget {
 const LoginButton({ 
@@ -42,6 +43,7 @@ final String role;
         ),
       ),
         onPressed: () async {
+        UserData.userRole = role;
         UserData.userCredential = await UserData.signInWithGoogle();
         if (UserData.isLoginSuccess()) {
           await UserData.uploadDataIfFirstTime(); 
@@ -94,7 +96,7 @@ final String role;
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              buttonColor == Colors.white ? "assets/svg/google_orange.svg" : "assets/svg/google_white.svg",
+              buttonColor == whiteColor ? "assets/svg/google_orange.svg" : "assets/svg/google_white.svg",
             ),
 
             const SizedBox(width: 10),

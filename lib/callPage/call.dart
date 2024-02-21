@@ -190,11 +190,10 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                   flex: 6,
                   child: Center(
                     child: StreamBuilder(
-                      stream: FirestoreData.dataFireStore,
+                      stream: FirestoreData.userDataFireStore,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          FirestoreData.getFireData(snapshot);
-                          if (FirestoreData.yourData.entries.elementAt(0).value["remoteUid"] != "") {
+                          if (snapshot.data!.data()!["remoteUid"] != "") {
                             WidgetsBinding.instance.addPostFrameCallback(
                               (_) => Navigator.push(context,
                                 MaterialPageRoute(
@@ -205,7 +204,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                             return const SizedBox.shrink();
                           }
 
-                          if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
+                          if (snapshot.data!.data()!["isOnCall"]) {
                             return Stack(
                               alignment: Alignment.center,
                               children: [
@@ -318,19 +317,17 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                 isCalling.value = true;
                                 await AgoraData.setupVoiceSDKEngine();
                                 AgoraData.channelName = UserData.userCredential.user.uid;
-                                await FirebaseFirestore.instance.collection("user").doc(FirestoreData.otherData.entries.elementAt(0).key).set({
-                                  "caller": UserData.userCredential.user.uid,
+
+                                await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
+                                  "calling": OfficerFireStoreData.allData!.entries.elementAt(0).key,
                                   "isOnCall": true,
                                 }, SetOptions(merge: true));
-                            
-                                await FirebaseFirestore.instance.collection("user").doc(FirestoreData.yourData.entries.elementAt(0).key).set({
-                                  "caller": UserData.userCredential.user.uid,
-                                  "isOnCall": true,
+
+                                await FirestoreData.officer.doc(OfficerFireStoreData.allData!.entries.elementAt(0).key).set({
+                                  "calling": UserData.userCredential.user.uid,
                                 }, SetOptions(merge: true));
                             
                                 debugPrint("channel name: $AgoraData.channelName");
-                                AgoraData.callingIndex = 0;
-                                debugPrint("calling index: 0");
                                 AgoraData.join();
                               },
                               child: Container(
@@ -448,7 +445,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                 bottom: 10,
                               ),
                               child: StreamBuilder(
-                                stream: FirestoreData.dataFireStore,
+                                stream: OfficerFireStoreData.allDataFireStore,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     return const Center(
@@ -456,11 +453,14 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                     );
                                   }
                                   if (snapshot.hasData) {
-                                    FirestoreData.getFireData(snapshot);
+                                    snapshot.data!.docs.forEach((element) {
+                                      debugPrint(element.data().toString());
+                                    });
+                                    OfficerFireStoreData.getAllData(snapshot);
                                     return SingleChildScrollView(
                                       physics: const BouncingScrollPhysics(),
                                       child: Column(
-                                        children: List.generate(FirestoreData.otherData.length, (index) {
+                                        children: List.generate(OfficerFireStoreData.allData!.length, (index) {
                                           return Container(
                                             width: size.width,
                                             height: size.height * 0.1,
@@ -497,7 +497,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
-                                                            Text("${FirestoreData.otherData.entries.elementAt(index).value["name"]}"),
+                                                            Text("${OfficerFireStoreData.allData!.entries.elementAt(index).value["name"]}"),
                                                             const Text(
                                                               "Kota Semarang, Jawa Tengah",
                                                               style: TextStyle(
