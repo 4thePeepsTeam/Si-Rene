@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sirene/callPage/user_map.dart';
 import 'package:sirene/callPage/user_data.dart';
 import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
-import 'package:sirene/callPage/on_call.dart';
+import 'package:sirene/globalData/position_data.dart';
 
 class Call extends StatefulWidget {
   const Call({ super.key });
@@ -22,9 +22,30 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
   late Animation <double> _bg1;
   late Animation <double> _bg2;
 
+  // static String isNeedHelp = "";
+
+  // Stream <void> streamUserPosition = Stream.periodic(const Duration(seconds: 10), (seconds) async {
+
+  //   // userPosition = await getCurrentPosition();
+  //   // debugPrint(userPosition.toString());
+  //   FirestoreData.user.doc(UserData.userCredential.user!.uid).snapshots().listen((event) {
+  //     debugPrint("getting data");
+  //     isNeedHelp = event.data()!["calling"].toString();
+  //     debugPrint("\n\n\nisNeedHelp? $isNeedHelp\n\n\n");
+  //   });
+
+  //   if (isNeedHelp != "") {
+  //     debugPrint("updating...");
+  //     await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
+  //       "location": GeoPoint(double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!)),
+  //     }, SetOptions(merge: true));
+  //   }
+  // }).asyncMap((event) async => await event);
+
   @override
   void initState() {
     super.initState();
+
     _controllerBg1 = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
@@ -63,6 +84,9 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
     }
     _controllerBg1.dispose();
     _controllerBg2.dispose();
+
+    // FirestoreData.user.doc(UserData.userCredential.user!.uid).snapshots().listen((event) {}).cancel().then((value) => debugPrint("cancelled"));
+
     super.dispose();
   }
 
@@ -128,7 +152,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                     physics: BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     child: Text(
-                                      "Kost Wisna Arjuna, Sekaran, Gn. Pati",
+                                      "Jl. Taman Mini Indonesia Indah, Ceger, Kec. Cipayung, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13820",
                                       style: TextStyle(
                                         fontSize: 14,
                                       color: Color.fromRGBO(1, 67, 97, 1),
@@ -189,182 +213,126 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                 Expanded(
                   flex: 6,
                   child: Center(
-                    child: StreamBuilder(
-                      stream: FirestoreData.userDataFireStore,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data!.data()!["remoteUid"] != "") {
-                            WidgetsBinding.instance.addPostFrameCallback(
-                              (_) => Navigator.push(context,
-                                MaterialPageRoute(
-                                  builder: (context) => const OnCall(),
-                                ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        AnimatedBuilder(
+                          animation: _controllerBg2,
+                          builder: (context, child) {
+                            return Container(
+                              width: size.width * 0.6 * _bg2.value,
+                              height: size.width * 0.6 * _bg2.value,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(255, 87, 20, 0.1)
                               ),
                             );
-                            return const SizedBox.shrink();
-                          }
-
-                          if (snapshot.data!.data()!["isOnCall"]) {
-                            return Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                AnimatedBuilder(
-                                  animation: _controllerBg2,
-                                  builder: (context, child) {
-                                    return Container(
-                                      width: size.width * 0.6 * _bg2.value,
-                                      height: size.width * 0.6 * _bg2.value,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color.fromRGBO(255, 87, 20, 0.1)
-                                      ),
-                                    );
-                                  },
-                                ),
-                                              
-                                AnimatedBuilder(
-                                  animation: _controllerBg1,
-                                  builder: (context, child) {
-                                    return Container(
-                                      width: size.width * 0.55 * _bg1.value,
-                                      height: size.width * 0.55 * _bg1.value,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color.fromRGBO(255, 87, 20, 0.4)
-                                      ),
-                                    );
-                                  },
-                                ),
-                                              
-                                GestureDetector(
-                                  onTap: () async {
-                                    isCalling.value = false;
-                                    AgoraData.channelName = "";
-                                    debugPrint("channel name: $AgoraData.channelName");
-                                    await FirestoreData.removeCallData();
-                                    AgoraData.leave();
-                                  },
-                                  child: Container(
-                                    width: size.width * 0.5,
-                                    height: size.width * 0.5,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color.fromRGBO(255, 87, 20, 1),
-                                    ),
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.phone_paused,
-                                            color: Colors.white,
-                                            size: size.width * 0.125,
-                                          ),
-                                  
-                                          const SizedBox(height: 10),
-                                  
-                                          const Text(
-                                            "Batalkan",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          },
+                        ),
+                                      
+                        AnimatedBuilder(
+                          animation: _controllerBg1,
+                          builder: (context, child) {
+                            return Container(
+                              width: size.width * 0.55 * _bg1.value,
+                              height: size.width * 0.55 * _bg1.value,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(255, 87, 20, 0.4)
+                              ),
                             );
-                          }
-                        }
+                          },
+                        ),
+                                      
+                        GestureDetector(
+                          onTap: () async {
+                  
+                            // await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
+                            //   "calling": OfficerFireStoreData.allData!.entries.elementAt(0).key,
+                            //   // "isOnCall": true,
+                            // }, SetOptions(merge: true));
+                  
+                            // await FirestoreData.officer.doc(OfficerFireStoreData.allData!.entries.elementAt(0).key).set({
+                            //   "calling": UserData.userCredential.user.uid,
+                            //   "isOnDuty": true,
+                            // }, SetOptions(merge: true)).then((value) {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     SnackBar(
+                            //       content: Text("Data sent"),
+                            //     )
+                            //   );
+                            // });
 
-                        return Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            AnimatedBuilder(
-                              animation: _controllerBg2,
-                              builder: (context, child) {
-                                return Container(
-                                  width: size.width * 0.6 * _bg2.value,
-                                  height: size.width * 0.6 * _bg2.value,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color.fromRGBO(255, 87, 20, 0.1)
-                                  ),
-                                );
-                              },
-                            ),
-                                          
-                            AnimatedBuilder(
-                              animation: _controllerBg1,
-                              builder: (context, child) {
-                                return Container(
-                                  width: size.width * 0.55 * _bg1.value,
-                                  height: size.width * 0.55 * _bg1.value,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color.fromRGBO(255, 87, 20, 0.4)
-                                  ),
-                                );
-                              },
-                            ),
-                                          
-                            GestureDetector(
-                              onTap: () async {
-                                isCalling.value = true;
-                                await AgoraData.setupVoiceSDKEngine();
-                                AgoraData.channelName = UserData.userCredential.user.uid;
-
-                                await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
-                                  "calling": OfficerFireStoreData.allData!.entries.elementAt(0).key,
-                                  "isOnCall": true,
-                                }, SetOptions(merge: true));
-
-                                await FirestoreData.officer.doc(OfficerFireStoreData.allData!.entries.elementAt(0).key).set({
+                            if (userPosition["latitude"]!.isNotEmpty && userPosition["longitude"]!.isNotEmpty) {
+                              await FirestoreData.officer.get().then((value) {
+                                officerId = value.docs.first.id;
+                                officerLatitude = value.docs.first.data()["location"].latitude.toString();
+                                officerLongitude = value.docs.first.data()["location"].longitude.toString();
+                                debugPrint("officerid: $officerId");
+                                FirestoreData.user.doc(UserData.userCredential.user.uid).update({
+                                  "calling": value.docs.first.id,
+                                });
+                                FirestoreData.officer.doc(value.docs.first.id).update({
                                   "calling": UserData.userCredential.user.uid,
-                                }, SetOptions(merge: true));
-                            
-                                debugPrint("channel name: $AgoraData.channelName");
-                                AgoraData.join();
-                              },
-                              child: Container(
-                                width: size.width * 0.5,
-                                height: size.width * 0.5,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color.fromRGBO(255, 87, 20, 1),
-                                ),
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.call_rounded,
-                                        color: Colors.white,
-                                        size: size.width * 0.125,
-                                      ),
-                              
-                                      const SizedBox(height: 10),
-                              
-                                      const Text(
-                                        "Call Ambulance",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ],
+                                  "status": "Preparing",
+                                  "isOnDuty": true,
+                                });
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Data sent"),
+                                )
+                              );
+                              await getPolyline(double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!), double.parse(officerLatitude), double.parse(officerLongitude));
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) {
+                                    return UserMap(id: officerId);
+                                  },
+                                ));
+                              });
+                            }
+                            else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please activate your location services"),
+                                )
+                              );
+                            }
+                          },
+                          child: Container(
+                            width: size.width * 0.5,
+                            height: size.width * 0.5,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromRGBO(255, 87, 20, 1),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.call_rounded,
+                                    color: Colors.white,
+                                    size: size.width * 0.125,
                                   ),
-                                ),
+                          
+                                  const SizedBox(height: 10),
+                          
+                                  const Text(
+                                    "Call Ambulance",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                          ],
-                        );
-                      },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -382,9 +350,9 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                 alignment: Alignment.bottomCenter,
                 child: ValueListenableBuilder(
                   valueListenable: isOpened,
-                  builder: (context, value, child) {
+                  builder: (context, data, child) {
                     return AnimatedSlide(
-                      offset: value ? const Offset(0, 0) : const Offset(0, 0.66),
+                      offset: data ? const Offset(0, 0) : const Offset(0, 0.66),
                       duration: const Duration(milliseconds: 250),
                       curve: Curves.easeInOutCirc,
                       child: Container(
@@ -423,10 +391,11 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                         alignment: Alignment.centerRight,
                                         child: IconButton(
                                           icon: Icon(
-                                            value ? Icons.expand_more : Icons.expand_less,
+                                            data ? Icons.expand_more : Icons.expand_less,
                                           ),
                                           onPressed: () {
                                             isOpened.value = !isOpened.value;
+                                            setState(() {});
                                           },
                                         ),
                                       ),
@@ -444,23 +413,20 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                 right: 10,
                                 bottom: 10,
                               ),
-                              child: StreamBuilder(
-                                stream: OfficerFireStoreData.allDataFireStore,
+                              child: FutureBuilder(
+                                future: getNearbyAmbulance(context),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
-                                    return const Center(
-                                      child: Text("Something went wrong"),
+                                    return Center(
+                                      child: Text("Something went wrong\n${snapshot.error}"),
                                     );
                                   }
                                   if (snapshot.hasData) {
-                                    snapshot.data!.docs.forEach((element) {
-                                      debugPrint(element.data().toString());
-                                    });
-                                    OfficerFireStoreData.getAllData(snapshot);
+                                    debugPrint(snapshot.data!.data["data"].elementAt(0).toString());
                                     return SingleChildScrollView(
                                       physics: const BouncingScrollPhysics(),
                                       child: Column(
-                                        children: List.generate(OfficerFireStoreData.allData!.length, (index) {
+                                        children: List.generate(snapshot.data!.data["data"].length, (index) {
                                           return Container(
                                             width: size.width,
                                             height: size.height * 0.1,
@@ -497,7 +463,7 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
-                                                            Text("${OfficerFireStoreData.allData!.entries.elementAt(index).value["name"]}"),
+                                                            Text("${snapshot.data!.data["data"].elementAt(index)["name"]}"),
                                                             const Text(
                                                               "Kota Semarang, Jawa Tengah",
                                                               style: TextStyle(
@@ -523,9 +489,8 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                                                           width: 20,
                                                           height: 20,
                                                         ),
-                                                        const Text(
-                                                          "500 m",
-                                                          style: TextStyle(
+                                                        Text(
+                                                          "${snapshot.data!.data["data"].elementAt(index)["routes"]["distanceMeters"]} m",                                                         style: const TextStyle(
                                                             fontSize: 10,
                                                             color: Color.fromRGBO(255, 87, 20, 1),
                                                           ),

@@ -1,27 +1,16 @@
 # Si Rene App
 
-Si Rene is an emergency lifeline in your pocket. With a single tap, you bypass frantic call centers and connect directly to police, firefighters, or ambulances. No frustrating menus, just immediate action when you need it most. Si Rene puts you in control, bringing swift help when seconds matter.
+Si Rene is a one-stop emergency app. It provides a faster way for users to call and track services in moments of emergency by eliminating call centers as intermediaries. Users only need to tap a button and speak of their emergency – all other information like location and user identity are automatically relayed to the service.
 
 ---
 Developed by:
 
 4thePeeps Team
--  Thoriq Ibrahim Farras `Huslter`
--  Ahmad Bagas Aditya Ilham Aulia `Hipster`
--  Nabil Mutawakkil Qisthi `Hacker`
--  Almaas Izdihar Sant `Hacker`
+-  Thoriq Ibrahim Farras 
+-  Ahmad Bagas Aditya Ilham Aulia 
+-  Nabil Mutawakkil Qisthi 
+-  Almaas Izdihar Sant
 
 ---
-## How to Install
-Go to [Releases](https://github.com/4thePeepsTeam/Si-Rene/releases/) and download the Apk to install it on your Android device
-
-
----
-## Preview
-
-- Customer App
-![Frame 4324 (1)](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/ff1c271b-f5cc-4c21-86d7-112e34703b78)
-
-- Officer App
-![Frame 4325 (1)](https://github.com/4thePeepsTeam/Si-Rene/assets/76770366/3a6385f4-3f0c-4911-aa5f-c28fe5d7226c)
-
+## How to Install the App
+Go to [Releases](https://github.com/4thePeepsTeam/Si-Rene/releases/) and download the .apk file, then install it on your Android device
