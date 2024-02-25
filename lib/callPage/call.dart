@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sirene/callPage/user_map.dart';
@@ -24,27 +27,23 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
 
   // static String isNeedHelp = "";
 
-  // Stream <void> streamUserPosition = Stream.periodic(const Duration(seconds: 10), (seconds) async {
+  Stream <void> streamUserPosition = Stream.periodic(const Duration(seconds: 10), (seconds) async {
 
-  //   // userPosition = await getCurrentPosition();
-  //   // debugPrint(userPosition.toString());
-  //   FirestoreData.user.doc(UserData.userCredential.user!.uid).snapshots().listen((event) {
-  //     debugPrint("getting data");
-  //     isNeedHelp = event.data()!["calling"].toString();
-  //     debugPrint("\n\n\nisNeedHelp? $isNeedHelp\n\n\n");
-  //   });
+    userPosition = await getCurrentPosition();
+    debugPrint(userPosition.toString());
 
-  //   if (isNeedHelp != "") {
-  //     debugPrint("updating...");
-  //     await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
-  //       "location": GeoPoint(double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!)),
-  //     }, SetOptions(merge: true));
-  //   }
-  // }).asyncMap((event) async => await event);
+    await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
+      "location": GeoPoint(double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!)),
+    }, SetOptions(merge: true));
+  }).asyncMap((event) async => await event);
+
+  late StreamSubscription subLocation = streamUserPosition.listen((event) {});
 
   @override
   void initState() {
     super.initState();
+
+    subLocation = streamUserPosition.listen((event) {});
 
     _controllerBg1 = AnimationController(
       vsync: this,
@@ -84,6 +83,8 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
     }
     _controllerBg1.dispose();
     _controllerBg2.dispose();
+    
+    subLocation.cancel();
 
     // FirestoreData.user.doc(UserData.userCredential.user!.uid).snapshots().listen((event) {}).cancel().then((value) => debugPrint("cancelled"));
 
