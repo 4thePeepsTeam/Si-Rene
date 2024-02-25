@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/userName/data/user_name_data.dart';
+import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
 
 class Continue extends StatefulWidget {
   const Continue({
@@ -35,7 +38,15 @@ class _ContinueState extends State<Continue> {
                 ),
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
+              if (UserData.userRole == "user") {
+                await FirestoreData.user.doc(UserData.userCredential.user.uid).set({
+                  "name": name,
+                  "isOnCall": false,
+                  "remoteUid": "",
+                  "calling": "",
+                });
+              }
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(

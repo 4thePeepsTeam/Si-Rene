@@ -6,6 +6,7 @@ import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sirene/globalData/position_data.dart';
 import 'package:sirene/globalData/theme_data.dart';  
 
 class LoginButton extends StatelessWidget {
@@ -50,6 +51,7 @@ final String role;
           await FirestoreData.removeCallData();
           AgoraData.leave();
           UserData.userRole = role;
+          // position.value = getCurrentPosition();
           if (UserData.firstTime && role == "user") {
             await Future.delayed(Duration.zero, () {
               Navigator.of(context).push(

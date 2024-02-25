@@ -20,12 +20,6 @@ mixin UserData {
         if (!value.exists) {
           debugPrint("value not existed yet");
           firstTime = true;
-          await FirebaseFirestore.instance.collection("user").doc(userCredential.user.uid).set({
-            "name": "test",
-            "isOnCall": false,
-            "remoteUid": "",
-            "calling": "",
-          });
         }
         else {
           firstTime = false;

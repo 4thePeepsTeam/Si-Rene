@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
+import 'package:sirene/globalData/position_data.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sirene/officer/page/map/component/mapView/component/addressDetails/address_details.dart';
-import 'package:sirene/officer/page/map/component/mapView/component/path/path_widget.dart';
-import 'package:sirene/officer/page/map/component/mapView/component/pinPoint/pin_point.dart';
-
 class MapView extends StatefulWidget {
   const MapView({ super.key });
 
@@ -13,29 +12,64 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
+
+  late GoogleMapController _controller;
+
+  Future <dynamic> getData() async {
+    String caller = await FirestoreData.officer.doc(UserData.userCredential.user.uid).get().then((value) => value.data()!["calling"]);
+    double callerLatitude = await FirestoreData.user.doc(caller).get().then((value) => value.data()!["location"].latitude);
+    double callerLongitude = await FirestoreData.user.doc(caller).get().then((value) => value.data()!["location"].longitude);
+
+    debugPrint("got caller coordinates");
+
+    return await getPolyline(callerLatitude, callerLongitude, double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      options: const MapOptions(
-        initialCenter: LatLng(-6.972579049641416, 109.10862928321885),
-        initialZoom: 13,
-      ),
-      children: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: "com.example.flutter_maps_test",
-        ),
+    return StreamBuilder(
+      stream: FirestoreData.officer.doc(UserData.userCredential.user.uid).snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          debugPrint("data: ${snapshot.data!.data().toString()}");
+          return FutureBuilder(
+            future: getData(),
+            builder: (context, snapshot) {
+              return Stack(
+                children: [
+                  GoogleMap(
+                    mapType: MapType.normal,
+                    zoomControlsEnabled: false,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!)),
+                      zoom: 19.151926040649414
+                    ),
+                    onMapCreated: (GoogleMapController controller) async {
+                      _controller = controller;
+                    },
+                    onLongPress: (argument) {
+                    },
+                    polylines: polylines,
+                    markers: Set<Marker>.of(markers.values),
+                  ),
 
-        const Stack(
-          children:[
-            PathWidget(),
+                  const AddressDetails(),
+                ],
+              );
+            },
+          );
+        }
 
-            PinPoint(),
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error\n${snapshot.error}"),
+          );
+        }
 
-            AddressDetails(),
-          ],
-        ),
-      ],
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

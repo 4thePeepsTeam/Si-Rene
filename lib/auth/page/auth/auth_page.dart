@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:sirene/auth/page/auth/component/bottomText/bottom_text.dart';
 import 'package:sirene/auth/page/auth/component/headerLogo/header_logo.dart';
 import 'package:sirene/auth/page/auth/component/loginButton/login_button.dart';

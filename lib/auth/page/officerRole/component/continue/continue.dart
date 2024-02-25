@@ -55,15 +55,13 @@ class _ContinueState extends State<Continue> {
               await FirebaseFirestore.instance.collection("officer").doc(UserData.userCredential.user.uid).get().then((value) async {
                 if (!value.exists) {
                   debugPrint("value not existed yet");
-                  await getCurrentPosition();
-                  debugPrint(position.toString());
                   UserData.firstTime = true;
                   await FirebaseFirestore.instance.collection("officer").doc(UserData.userCredential.user.uid).set({
                     "caller": "",
                     "calling": "",
                     "isOnCall": false,
                     "isOnDuty": false,
-                    "location": GeoPoint(position.latitude, position.longitude),
+                    // "location": GeoPoint(position.value.latitude, position.value.longitude),
                     "name": name,
                     "phoneNumber": "",
                     "remoteUid": "",
