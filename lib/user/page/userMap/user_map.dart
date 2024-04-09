@@ -387,7 +387,7 @@ class _UserMapState extends State<UserMap> {
                                       children: [
                                         const Text(
                                           "Arrival Status",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Color  .fromRGBO(0, 0, 0, 0.5),
                                             fontSize: 12,
                                           ),
