@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/globalData/auth_data.dart';
-import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/officer/page/map/map_page.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 

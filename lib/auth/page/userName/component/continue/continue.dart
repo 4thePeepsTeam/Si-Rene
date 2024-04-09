@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/userName/data/user_name_data.dart';
 import 'package:sirene/globalData/auth_data.dart';

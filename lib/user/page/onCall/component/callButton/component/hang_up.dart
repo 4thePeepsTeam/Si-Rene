@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
+import 'package:sirene/user/data/user_data.dart';
 
-class HangUpAction extends StatefulWidget {
-  const HangUpAction({ super.key });
+class HangUp extends StatefulWidget {
+  const HangUp({ super.key });
 
   @override
-  State <HangUpAction> createState() => _HangUpActionState();
+  State <HangUp> createState() => _HangUpState();
 }
 
-class _HangUpActionState extends State<HangUpAction> {
+class _HangUpState extends State<HangUp> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,9 +21,9 @@ class _HangUpActionState extends State<HangUpAction> {
             debugPrint("channel name: ${AgoraData.channelName}");
             await FirestoreData.removeCallData();
             AgoraData.leave();
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pop();
-            });
+            hasOrder.value = true;
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
           },
           child: Container(
             padding: const EdgeInsets.all(8),

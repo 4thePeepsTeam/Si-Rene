@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/officerRole/officer_role_page.dart';
 import 'package:sirene/auth/page/userName/user_name_page.dart';
-import 'package:sirene/callPage/call.dart';
+import 'package:sirene/user/page/homeCall/component/call/call.dart';
 import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/auth_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sirene/globalData/position_data.dart';
 import 'package:sirene/globalData/theme_data.dart';  
 
 class LoginButton extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sirene/callPage/user_data.dart';
+import 'package:sirene/user/data/user_data.dart';
 
 class Activity extends StatefulWidget {
   const Activity({ super.key });

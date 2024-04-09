@@ -60,11 +60,13 @@ Future <Response<dynamic>> getNearbyAmbulance(BuildContext context) async{
   debugPrint(userPosition.toString());
 
   if (userPosition["latitude"]!.isEmpty && userPosition["longitude"]!.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("Please activate your location services"),
-      )
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please activate your location services"),
+        )
+      );
+    });
   }
   while (userPosition["latitude"]!.isEmpty && userPosition["longitude"]!.isEmpty) {
     userPosition = await getCurrentPosition();
@@ -107,7 +109,7 @@ void addPolyLine(double latitude, double longitude) {
 
   polylines.clear();
   debugPrint("coordinates: $routeCoordinates");
-  polylines.add(Polyline(polylineId: PolylineId("id"), color: orangeColor, points: routeCoordinates));
+  polylines.add(Polyline(polylineId: const PolylineId("id"), color: orangeColor, points: routeCoordinates));
   debugPrint("added");
   debugPrint(polylines.first.points.toString());
 }
