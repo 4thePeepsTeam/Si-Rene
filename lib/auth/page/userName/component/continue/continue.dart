@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/userName/data/user_name_data.dart';
-import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 
 class Continue extends StatefulWidget {

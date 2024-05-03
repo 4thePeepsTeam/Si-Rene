@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "sirene",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "sirene (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "sirene (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter-reference-app",
+            "cwd": "android\\video-sdk-samples-flutter\\flutter-reference-app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter-reference-app (profile mode)",
+            "cwd": "android\\video-sdk-samples-flutter\\flutter-reference-app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter-reference-app (release mode)",
+            "cwd": "android\\video-sdk-samples-flutter\\flutter-reference-app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/globalData/position_data.dart';
 
 class AddressDetails extends StatefulWidget {
   const AddressDetails({ super.key });
@@ -8,19 +9,25 @@ class AddressDetails extends StatefulWidget {
 }
 
 class _AddressDetailsState extends State<AddressDetails> {
+
   @override
   Widget build(BuildContext context) {
-    return const Align(
+    return Align(
       alignment: Alignment.centerLeft,
       child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        child: Text(
-          "Jl. Taman Mini Indonesia Indah, Ceger, Kec. Cipayung, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13820",
-          style: TextStyle(
-            fontSize: 14,
-          color: Color.fromRGBO(1, 67, 97, 1),
-          ),
+        child: ListenableBuilder(
+          listenable: userPositionValue,
+          builder: (context, child) {
+            return Text(
+              "${userPositionValue.latitude}, ${userPositionValue.longitude}",
+              style: const TextStyle(
+                fontSize: 14,
+              color: Color.fromRGBO(1, 67, 97, 1),
+              ),
+            );
+          },
         ),
       ),
     );

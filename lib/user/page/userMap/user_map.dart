@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/position_data.dart';
 import 'package:sirene/globalData/theme_data.dart';
+import 'package:sirene/user/page/homeCall/home_call.dart';
 
 class UserMap extends StatefulWidget {
   const UserMap({
@@ -30,6 +31,15 @@ class _UserMapState extends State<UserMap> {
     return Scaffold(
       body: PopScope(
         canPop: false,
+        onPopInvoked: (didPop) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) {
+                return const HomeCall();
+              },
+            ),
+          );
+        },
         child: SafeArea(
           child: Stack(
             children: [

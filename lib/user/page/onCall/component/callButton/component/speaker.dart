@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sirene/globalData/agora_data.dart';
 
 class Speaker extends StatefulWidget {
-  const Speaker({ Key? key }) : super(key: key);
+  const Speaker({ super.key });
 
   @override
   State <Speaker> createState() => _SpeakerState();

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/user/data/user_data.dart';
 
 class HangUp extends StatefulWidget {
@@ -19,11 +21,9 @@ class _HangUpState extends State<HangUp> {
           onTap: () async {
             AgoraData.channelName = "";
             debugPrint("channel name: ${AgoraData.channelName}");
-            await FirestoreData.removeCallData();
             AgoraData.leave();
             hasOrder.value = true;
-            // ignore: use_build_context_synchronously
-            Navigator.of(context).pop();
+            await FirestoreData.removeCallData();
           },
           child: Container(
             padding: const EdgeInsets.all(8),

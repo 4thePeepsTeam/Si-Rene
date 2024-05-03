@@ -17,11 +17,11 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
   
   @override
   void dispose() {
-    try {
-      AgoraData.agoraEngine.release();
-    } catch (x) {
-      debugPrint("agora engine is not initialized yet");
-    }
+    // try {
+    //   AgoraData.agoraEngine.release();
+    // } catch (x) {
+    //   debugPrint("agora engine is not initialized yet");
+    // }
     
     // FirestoreData.user.doc(UserData.userCredential.user!.uid).snapshots().listen((event) {}).cancel().then((value) => debugPrint("cancelled"));
 
@@ -42,16 +42,16 @@ class _CallState extends State<Call> with TickerProviderStateMixin {
                 ),
             
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: CallHeader(),
                 ),
             
                 Expanded(
-                  flex: 6,
+                  flex: 7,
                   child: CallButton(),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: SizedBox.shrink(),
                 ),
               ],

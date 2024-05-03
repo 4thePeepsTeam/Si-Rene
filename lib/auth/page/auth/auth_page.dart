@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/auth/component/bottomText/bottom_text.dart';
 import 'package:sirene/auth/page/auth/component/headerLogo/header_logo.dart';
 import 'package:sirene/auth/page/auth/component/loginButton/login_button.dart';
+import 'package:sirene/officer/page/call/call_page.dart';
 import 'package:sirene/officer/page/home/home_page.dart';
 import 'package:sirene/globalData/theme_data.dart';
 import 'package:sirene/user/page/homeCall/home_call.dart';
+import 'package:sirene/user/page/homePageUser/home_page_user.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({ super.key });
@@ -59,6 +61,7 @@ class _AuthPageState extends State<AuthPage> {
                         buttonText: "Continue with Google as Officer",
                         textColor: orangeColor,
                         role: "officer",
+                        // widget: CallPage(),
                         widget: const HomePageOfficer(),
                       ),
         

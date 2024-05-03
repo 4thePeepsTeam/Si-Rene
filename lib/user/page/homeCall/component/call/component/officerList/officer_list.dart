@@ -1,7 +1,5 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/position_data.dart';
 import 'package:sirene/user/data/user_data.dart';
@@ -19,23 +17,14 @@ class _OfficerListState extends State<OfficerList> {
 
   // static String isNeedHelp = "";
 
-  Stream <void> streamUserPosition = Stream.periodic(const Duration(seconds: 10), (seconds) async {
-
-    userPosition = await getCurrentPosition();
-    debugPrint(userPosition.toString());
-
-    await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
-      "location": GeoPoint(double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!)),
-    }, SetOptions(merge: true));
-  }).asyncMap((event) async => await event);
-
-  late StreamSubscription subLocation = streamUserPosition.listen((event) {});
-
   @override
   void initState() {
     super.initState();
 
-    subLocation = streamUserPosition.listen((event) {});
+    if (!isStreamPosition) {
+      subLocation = streamUserPosition.listen((event) {});
+      isStreamPosition = true;
+    }
   }
 
   @override
@@ -99,7 +88,9 @@ class _OfficerListState extends State<OfficerList> {
                             );
                           }
                           if (snapshot.hasData) {
-                            debugPrint(snapshot.data!.data["data"].elementAt(0).toString());
+                            officerId = snapshot.data!.data["data"].elementAt(0)["id"].toString();
+                            officerLatitude = snapshot.data!.data["data"].elementAt(0)["location"]["latitude"].toString();
+                            officerLongitude = snapshot.data!.data["data"].elementAt(0)["location"]["longitude"].toString();
                             return NearestOfficer(snapshot: snapshot);
                           }
                                       

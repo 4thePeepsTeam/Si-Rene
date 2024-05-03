@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/officer/data/officer_data.dart';
 import 'package:slide_to_act/slide_to_act.dart';

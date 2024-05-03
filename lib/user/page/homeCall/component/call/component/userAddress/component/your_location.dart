@@ -6,7 +6,7 @@ const YourLocation({ super.key });
   @override
   Widget build(BuildContext context){
     return const Align(
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.topLeft,
       child: Text(
         "Your Location",
         style: TextStyle(

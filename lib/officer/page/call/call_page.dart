@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/globalData/agora_data.dart';
 // import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/officer/page/call/component/callAction/call_action.dart';
@@ -23,47 +24,51 @@ class _CallPageState extends State<CallPage> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           OfficerFireStoreData.getFireData(snapshot);
-          return Scaffold(
-            body: SizedBox(
-              width: size.width,
-              height: size.height,
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Caller(),
+          // return Scaffold(
+          //   body: SizedBox(
+          //     width: size.width,
+          //     height: size.height,
+          //     child: const Column(
+          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //       children: [
+          //         Caller(),
           
-                  Time(),
+          //         Time(),
           
-                  CallAction(),
-                ],
-              ),
-            ),
-          );
-          
-          // if (FirestoreData.yourData.entries.elementAt(0).value["isOnCall"]) {
-          //   return Scaffold(
-          //     body: SizedBox(
-          //       width: size.width,
-          //       height: size.height,
-          //       child: const Column(
-          //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //         children: [
-          //           Caller(),
-            
-          //           Time(),
-            
-          //           CallAction(),
-          //         ],
-          //       ),
+          //         CallAction(),
+          //       ],
           //     ),
-          //   );
-          // }
-          // else {
-          //   AgoraData.channelName = "";
-          //   debugPrint("channel name: ${AgoraData.channelName}");
-          //   AgoraData.leave();
-          //   Navigator.of(context).pop();
-          // }
+          //   ),
+          // );
+
+          // debugPrint(OfficerFireStoreData.yourData!["isOnCall"].toString());
+          
+          if (OfficerFireStoreData.yourData!["isOnCall"]) {
+            return Scaffold(
+              body: SizedBox(
+                width: size.width,
+                height: size.height,
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Caller(),
+            
+                    Time(),
+            
+                    CallAction(),
+                  ],
+                ),
+              ),
+            );
+          }
+          else {
+            AgoraData.channelName = "";
+            debugPrint("channel name: ${AgoraData.channelName}");
+            AgoraData.leave();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pop();
+            });
+          }
         }
 
         return const Center(

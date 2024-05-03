@@ -32,26 +32,24 @@ class _UserAddressState extends State<UserAddress> {
             flex: 1,
             child: InfoIcon(),
           ),
-
+    
           Expanded(
             flex: 5,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   child: YourLocation(),
                 ),
-
+    
                 Expanded(
                   child: AddressDetails(),
                 ),
               ],
             ),
           ),
-
+    
           Expanded(
-            flex: 1,
+            flex: 2,
             child: ChangeAddress(),
           ),
         ],

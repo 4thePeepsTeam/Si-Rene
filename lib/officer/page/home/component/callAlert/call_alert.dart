@@ -20,6 +20,7 @@ class _CallAlertState extends State<CallAlert> {
 
         if (snapshot.hasData) {
           OfficerFireStoreData.getFireData(snapshot);
+          debugPrint("${OfficerFireStoreData.yourData!["calling"]}");
           if (OfficerFireStoreData.isGetCall()) {
             return StreamBuilder(
               stream: OfficerFireStoreData.callerData,

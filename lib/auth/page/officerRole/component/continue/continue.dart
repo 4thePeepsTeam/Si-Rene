@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/officerRole/data/officer_data.dart';
 import 'package:sirene/auth/page/userName/data/user_name_data.dart';
-import 'package:sirene/globalData/auth_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/officer/page/home/home_page.dart';
 
 class Continue extends StatefulWidget {

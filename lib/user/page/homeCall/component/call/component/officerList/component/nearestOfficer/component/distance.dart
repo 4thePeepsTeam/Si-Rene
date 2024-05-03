@@ -30,7 +30,8 @@ class _DistanceState extends State<Distance> {
             height: 20,
           ),
           Text(
-            "${widget.snapshot.data!.data["data"].elementAt(widget.index)["routes"]["distanceMeters"]} m",                                                         style: const TextStyle(
+            "${widget.snapshot.data!.data["data"].elementAt(widget.index)["routes"]["distanceMeters"]} m",
+            style: const TextStyle(
               fontSize: 10,
               color: Color.fromRGBO(255, 87, 20, 1),
             ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'auth_data.dart';
+import 'package:sirene/globalData/position_data.dart';
+import 'user_data.dart';
 
 mixin FirestoreData {
 
@@ -27,33 +28,19 @@ mixin FirestoreData {
 
   static Future <void> removeCallData () async {
     try {
-      if (UserData.userRole == "user") {
-        await FirestoreData.officer.doc(yourData[UserData.userCredential.user.uid]["calling"]).set({
-          "isOnCall": false,
-          "remoteUid": "",
-          "calling": "",
-        }, SetOptions(merge: true));
+      await FirestoreData.officer.doc(officerId).set({
+        "getCall": false,
+        "isOnCall": false,
+        "remoteUid": "",
+        "isOnDuty": true,
+      }, SetOptions(merge: true));
 
-        await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
-          "calling": "",
-          "isOnCall": false,
-          "remoteUid": "",
-        }, SetOptions(merge: true));
-      }
-      else {
-        await FirestoreData.user.doc(yourData[UserData.userCredential.user.uid]["calling"]).set({
-          "isOnCall": false,
-          "remoteUid": "",
-          "calling": "",
-        }, SetOptions(merge: true));
-
-        await FirestoreData.officer.doc(UserData.userCredential.user!.uid).set({
-          "calling": "",
-          "isOnCall": false,
-          "remoteUid": "",
-        }, SetOptions(merge: true));
-      }
-    } 
+      await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
+        "calling": "",
+        "isOnCall": false,
+        "remoteUid": "",
+      }, SetOptions(merge: true));
+    }
     catch (e) {
       debugPrint("data is not initialized yet");
     }
@@ -69,13 +56,13 @@ mixin OfficerFireStoreData {
   static late String callerName;
   static Map <String, dynamic>? allData = {};
 
-  static void getFireData(AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) async {
+  static void getFireData(AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
     debugPrint("Getting officer data");
     yourData = snapshot.data!.data();
     debugPrint(yourData.toString());
   }
 
-  static void getAllData(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) async {
+  static void getAllData(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
     debugPrint("Getting all officer data");
     var anything = snapshot.data!.docs.map((e) => {e.id: e.data() as Map <String, dynamic>}).toList();
 
@@ -88,6 +75,26 @@ mixin OfficerFireStoreData {
   }
 
   static bool isGetCall() {
-    return yourData!["calling"] != "";
+    return yourData!["calling"] != "" && yourData!["getCall"];
+  }
+
+  static Future <void> removeCallData () async {
+    try {
+      await FirestoreData.user.doc(yourData!["calling"]).set({
+        "isOnCall": false,
+        "remoteUid": "",
+        "calling": "",
+      }, SetOptions(merge: true));
+
+      await FirestoreData.officer.doc(UserData.userCredential.user!.uid).set({
+        "getCall": false,
+        "isOnCall": false,
+        "remoteUid": "",
+        "isOnDuty": true,
+      }, SetOptions(merge: true));
+    } 
+    catch (e) {
+      debugPrint("data is not initialized yet");
+    }
   }
 }

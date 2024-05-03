@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sirene/globalData/user_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/private.dart';
 import 'package:sirene/globalData/theme_data.dart';
 
@@ -54,6 +59,34 @@ Future<Map <String, String>> getCurrentPosition() async {
 }
 
 Map <String, String> userPosition = {};
+
+class UserCoordinate with ChangeNotifier {
+  String latitude = "";
+  String longitude = "";
+
+  void update() {
+    latitude = userPosition["latitude"]!;
+    longitude = userPosition["longitude"]!;
+    notifyListeners();
+  }
+}
+
+final UserCoordinate userPositionValue= UserCoordinate();
+
+bool isStreamPosition = false;
+
+Stream <void> streamUserPosition = Stream.periodic(const Duration(seconds: 10), (seconds) async {
+
+  userPosition = await getCurrentPosition();
+  userPositionValue.update();
+  debugPrint(userPosition.toString());
+
+  await FirestoreData.user.doc(UserData.userCredential.user!.uid).set({
+    "location": GeoPoint(double.parse(userPosition["latitude"]!), double.parse(userPosition["longitude"]!)),
+  }, SetOptions(merge: true));
+}).asyncMap((event) async => await event);
+
+StreamSubscription subLocation = streamUserPosition.listen((event) {});
 
 Future <Response<dynamic>> getNearbyAmbulance(BuildContext context) async{
   userPosition = await getCurrentPosition();
