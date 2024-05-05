@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sirene/auth/page/officerRole/data/officer_data.dart';
 import 'package:sirene/auth/page/userName/data/user_name_data.dart';
-import 'package:sirene/globalData/auth_data.dart';
-import 'package:sirene/globalData/position_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/officer/page/home/home_page.dart';
 
 class Continue extends StatefulWidget {
@@ -41,7 +40,7 @@ class _ContinueState extends State<Continue> {
             onPressed: () async {
 
               if (officerRole.isAmbulanceOperator.value) {
-                role = "ambulance operator";
+                role = "ambulance";
               }
 
               if (officerRole.isFirefighter.value) {
@@ -55,15 +54,13 @@ class _ContinueState extends State<Continue> {
               await FirebaseFirestore.instance.collection("officer").doc(UserData.userCredential.user.uid).get().then((value) async {
                 if (!value.exists) {
                   debugPrint("value not existed yet");
-                  await getCurrentPosition();
-                  debugPrint(position.toString());
                   UserData.firstTime = true;
                   await FirebaseFirestore.instance.collection("officer").doc(UserData.userCredential.user.uid).set({
                     "caller": "",
                     "calling": "",
                     "isOnCall": false,
                     "isOnDuty": false,
-                    "location": GeoPoint(position.latitude, position.longitude),
+                    // "location": GeoPoint(position.value.latitude, position.value.longitude),
                     "name": name,
                     "phoneNumber": "",
                     "remoteUid": "",

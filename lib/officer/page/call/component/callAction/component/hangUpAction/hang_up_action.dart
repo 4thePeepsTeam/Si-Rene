@@ -18,9 +18,8 @@ class _HangUpActionState extends State<HangUpAction> {
           onTap: () async {
             AgoraData.channelName = "";
             debugPrint("channel name: ${AgoraData.channelName}");
-            await FirestoreData.removeCallData();
+            await OfficerFireStoreData.removeCallData();
             AgoraData.leave();
-            Navigator.of(context).pop();
           },
           child: Container(
             padding: const EdgeInsets.all(8),

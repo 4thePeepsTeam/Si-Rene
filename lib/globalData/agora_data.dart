@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sirene/globalData/private.dart';
 import 'firestore_data.dart';
-import 'auth_data.dart';
+import 'user_data.dart';
 
 mixin AgoraData {
   static late RtcEngine agoraEngine; 
@@ -20,11 +20,7 @@ mixin AgoraData {
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
         channelProfile: ChannelProfileType.channelProfileCommunication,
     );
-
-    if (UserData.userRole != "user") {
-      uid = 2;
-    }
-
+    
     await agoraEngine.joinChannel(
         token: "",
         channelId: channelName,
@@ -38,6 +34,7 @@ mixin AgoraData {
 
   static void leave() async {
     try {
+      debugPrint("Leaving...");
       await agoraEngine.leaveChannel();
       // isJoin = false;
     }
@@ -84,6 +81,7 @@ mixin AgoraData {
             }, SetOptions(merge: true));
           }
         },
+
         onUserJoined: (RtcConnection connection, int rUid, int elapsed) async {
           showMessage("Remote user uid:$rUid joined the channel");
           debugPrint("\n\n\n\n\nuser joined\n\n\n\n\n");
@@ -99,6 +97,7 @@ mixin AgoraData {
             }, SetOptions(merge: true));
           }
         },
+
         onUserOffline: (RtcConnection connection, int? rUid, UserOfflineReasonType reason) async {
           showMessage("Remote user uid:$rUid left the channel");
           debugPrint("\n\n\n\n\nuser offline\n\n\n\n\n");
@@ -113,18 +112,23 @@ mixin AgoraData {
               "remoteUid": "",
             }, SetOptions(merge: true));
           }
-          await FirestoreData.removeCallData();
-          leave();
+
+          debugPrint("Offline, $reason\nLeaving...");
+          
+          // await FirestoreData.removeCallData();
+          // leave();
         },
 
         onConnectionLost: (connection) async {
-          await FirestoreData.removeCallData();
-          leave();
+          debugPrint("Connection Lost, $connection\nLeaving...");
+          // await FirestoreData.removeCallData();
+          // leave();
         },
 
         onError: (err, msg) async {
-          await FirestoreData.removeCallData();
-          leave();
+          debugPrint("Error, $err, $msg\nLeaving...");
+          // await FirestoreData.removeCallData();
+          // leave();
         },
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/officer/data/officer_data.dart';
+import 'package:sirene/globalData/user_data.dart';
+import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/officer/page/home/component/body/component/ambulanceBackground/ambulance_background.dart';
 import 'package:sirene/officer/page/home/component/body/component/slideToAccept/slide_to_accept.dart';
 import 'package:sirene/officer/page/home/component/body/component/noRequest/no_request.dart';
@@ -27,37 +28,49 @@ class _BodyState extends State<Body> {
         color: const Color.fromRGBO(243, 244, 239, 1),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: ValueListenableBuilder(
-        valueListenable: hasOrder,
-        builder: (context, value, child) {
-          if (value) {
-            return const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: NotificationAlert()
-                ),
+      child: StreamBuilder(
+        stream: FirestoreData.officer.doc(UserData.userCredential.user.uid).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+             if (snapshot.data!.data()!["isOnDuty"]) {
+              return const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: NotificationAlert()
+                  ),
 
-                Expanded(
-                  flex: 8,
-                  child: AmbulanceBackground()
-                ),
+                  Expanded(
+                    flex: 8,
+                    child: AmbulanceBackground()
+                  ),
 
-                Expanded(
-                  flex: 8,
-                  child: Request()
-                ),
+                  Expanded(
+                    flex: 8,
+                    child: Request()
+                  ),
 
-                Expanded(
-                  flex: 3,
-                  child: SlideToAccept(),
-                ),
-              ],
+                  Expanded(
+                    flex: 3,
+                    child: SlideToAccept(),
+                  ),
+                ],
+              );
+            }
+
+            return const NoRequest();
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error\n${snapshot.error}"),
             );
           }
 
-          return const NoRequest();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );

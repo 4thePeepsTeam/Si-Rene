@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/globalData/firestore_data.dart';
 
 class Caller extends StatefulWidget {
   const Caller({ super.key });
@@ -15,19 +16,19 @@ class _CallerState extends State<Caller> {
 
     return SizedBox(
       width: size.width,
-      child: const Column(
+      child: Column(
         children: [
           Text(
-            "Ahmad Bagas Aditya",
-            style: TextStyle(
+            OfficerFireStoreData.callerName,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
 
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
 
-          Text(
+          const Text(
             "Call",
             style: TextStyle(
               fontSize: 9,

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sirene/globalData/agora_data.dart';
 import 'package:sirene/globalData/firestore_data.dart';
+import 'package:sirene/globalData/user_data.dart';
 import 'package:sirene/officer/data/officer_data.dart';
 import 'package:sirene/officer/page/call/call_page.dart';
 
@@ -22,9 +24,13 @@ class _AcceptWidgetState extends State<AcceptWidget> {
             await AgoraData.setupVoiceSDKEngine();
             AgoraData.channelName = OfficerFireStoreData.yourData!["calling"];
             debugPrint("channel name: ${AgoraData.channelName}");
+            AgoraData.uid = 2;
             AgoraData.join();
             hasOrder.value = true;
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) {
+              return;
+            }
+            else {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
@@ -32,7 +38,7 @@ class _AcceptWidgetState extends State<AcceptWidget> {
                   },
                 ),
               );
-            });
+            }
           },
           child: Container(
             padding: const EdgeInsets.all(8),
