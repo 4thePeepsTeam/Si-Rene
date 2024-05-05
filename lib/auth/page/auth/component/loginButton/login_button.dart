@@ -6,7 +6,7 @@ import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/user_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sirene/globalData/theme_data.dart';
-import 'package:sirene/user/page/homePageUser/home_page_user.dart';  
+import 'package:sirene/user/page/homeCall/home_call.dart';
 
 class LoginButton extends StatelessWidget {
 const LoginButton({ 
@@ -58,7 +58,7 @@ final String role;
                   builder: (context) {
                     return const UserNamePage(
                       description: "Enter your full name as identification by the\nofficer",
-                      nextPage: HomePageUser(),
+                      nextPage: HomeCall(),
                     );
                   },
                 ),

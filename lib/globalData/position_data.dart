@@ -59,6 +59,7 @@ Future<Map <String, String>> getCurrentPosition() async {
 }
 
 Map <String, String> userPosition = {};
+String userLocation = "";
 
 class UserCoordinate with ChangeNotifier {
   String latitude = "";
@@ -126,10 +127,16 @@ Set<Polyline> polylines = {};
 String officerLatitude = "";
 String officerLongitude = "";
 String officerId = "";
+String officerName = "";
 
 Future <Response> getTimeDistance(double originLatitude, double originLongitude, double destLatitude, double destLongitude) async {
   Dio dio = Dio();
   return await dio.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$originLatitude,$originLongitude&destinations=$destLatitude,$destLongitude&key=$googleMapsApiKey");
+}
+
+Future <Response> getLocation(double yourLatitude, double yourLongitude) async {
+  Dio dio = Dio();
+  return await dio.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=$yourLatitude,$yourLongitude&key=$googleMapsApiKey");
 }
 
 void addPolyLine(double latitude, double longitude) {

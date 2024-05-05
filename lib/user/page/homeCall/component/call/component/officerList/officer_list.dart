@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sirene/globalData/user_data.dart';
-import 'package:sirene/globalData/firestore_data.dart';
 import 'package:sirene/globalData/position_data.dart';
 import 'package:sirene/user/data/user_data.dart';
 import 'package:sirene/user/page/homeCall/component/call/component/officerList/component/expandBody/expand_body.dart';
@@ -30,9 +28,6 @@ class _OfficerListState extends State<OfficerList> {
   @override
   void dispose() {
     subLocation.cancel();
-
-    // FirestoreData.user.doc(UserData.userCredential.user!.uid).snapshots().listen((event) {}).cancel().then((value) => debugPrint("cancelled"));
-
     super.dispose();
   }
 
@@ -89,6 +84,7 @@ class _OfficerListState extends State<OfficerList> {
                           }
                           if (snapshot.hasData) {
                             officerId = snapshot.data!.data["data"].elementAt(0)["id"].toString();
+                            officerName = snapshot.data!.data["data"].elementAt(0)["name"];
                             officerLatitude = snapshot.data!.data["data"].elementAt(0)["location"]["latitude"].toString();
                             officerLongitude = snapshot.data!.data["data"].elementAt(0)["location"]["longitude"].toString();
                             return NearestOfficer(snapshot: snapshot);

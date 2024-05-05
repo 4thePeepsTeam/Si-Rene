@@ -40,7 +40,7 @@ class _ContinueState extends State<Continue> {
             onPressed: () async {
 
               if (officerRole.isAmbulanceOperator.value) {
-                role = "ambulance operator";
+                role = "ambulance";
               }
 
               if (officerRole.isFirefighter.value) {

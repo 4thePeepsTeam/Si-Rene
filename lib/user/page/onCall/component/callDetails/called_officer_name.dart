@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sirene/globalData/position_data.dart';
 
 class CalledOfficerName extends StatefulWidget {
   const CalledOfficerName({ super.key });
@@ -10,9 +11,9 @@ class CalledOfficerName extends StatefulWidget {
 class _CalledOfficerNameState extends State<CalledOfficerName> {
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      "Ahmad Bagas Aditya",
-      style: TextStyle(
+    return Text(
+      officerName,
+      style: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
